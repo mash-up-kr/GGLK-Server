@@ -8,5 +8,6 @@
     "^@/(.*)$",
     "^[./]"
   ],
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"],
   "importOrderSortSpecifiers": true
 }

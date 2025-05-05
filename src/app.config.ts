@@ -8,7 +8,9 @@ import { Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { Express } from 'express';
 import redoc from 'redoc-express';
+import { GlobalResponseInterceptor, HttpExceptionFilter } from '@/common';
 
+// Redoc Setting
 export function ApplicationRedocConfig(app: INestApplication<Express>) {
   app.use(
     '/redoc',
@@ -34,6 +36,9 @@ export function ApplicationNestConfig(app: INestApplication) {
     type: VersioningType.URI,
   });
 
+  // Exception Filter
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   // Global Pipes
   app.useGlobalPipes(
     new ValidationPipe({
@@ -44,7 +49,10 @@ export function ApplicationNestConfig(app: INestApplication) {
   );
 
   // Global Interceptors
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
+  app.useGlobalInterceptors(
+    new GlobalResponseInterceptor(),
+    new ClassSerializerInterceptor(reflector),
+  );
 }
 
 // Application Swagger Configuration
