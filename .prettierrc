@@ -1,4 +1,6 @@
 {
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "importOrder": ["^@nest/(.*)$", "^@/(.*)$", "<THIRD_PARTY_MODULES>", "^[./]"],
+  "importOrderSortSpecifiers": true
 }
