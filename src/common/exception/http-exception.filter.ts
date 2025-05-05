@@ -17,12 +17,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     if (exception instanceof BaseException) {
       response.status(status).json(exception.getResponse());
     } else {
-      response.status(status).json({
-        statusCode: status,
-        errorCode: exception.name,
-        message: exception.message,
-        timestamp: new Date().toISOString(),
-      });
+      new BaseException(
+        status,
+        exception.message,
+        exception.name,
+      ).getResponse();
     }
   }
 }

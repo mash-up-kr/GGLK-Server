@@ -70,5 +70,14 @@ export function ApplicationSwaggerConfig(app: INestApplication) {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
+  // operationSorter: 알파벳순 정렬의미
+  // persisAuthorization: Swagger 인증 상태 유지
+  SwaggerModule.setup('docs', app, document, {
+    explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true,
+      displayRequestDuration: true,
+      operationsSorter: 'method',
+    },
+  });
 }

@@ -23,7 +23,8 @@
     "migration:generate": "npm run build && npm run typeorm -- migration:generate -d src/common/database/config.ts src/migrations/migration_$(date +%Y%m%d%H%M%S)",
     "migration:run": "npm run build && npm run typeorm -- migration:run -d src/common/database/config.ts",
     "migration:revert": "npm run build && npm run typeorm -- migration:revert -d src/common/database/config.ts",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "husky"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
