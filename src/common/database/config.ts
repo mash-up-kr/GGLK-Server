@@ -16,7 +16,7 @@ export const typeORMConfig: DataSourceOptions = {
   port: Number(process.env.DB_PORT ?? 3306),
   username: process.env.DB_USER ?? 'root',
   password: process.env.DB_PASSWORD ?? 'password',
-  database: process.env.DB_NAME ?? 'mashup_node',
+  database: process.env.DB_NAME ?? 'gglk',
   synchronize: isDev,
   logging: isDev,
   entities: [join(cwd(), 'dist', '**', `*.entity.js`)],
