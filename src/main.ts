@@ -3,8 +3,8 @@ import {
   ApplicationNestConfig,
   ApplicationRedocConfig,
   ApplicationSwaggerConfig,
-} from '@/app.config';
-import { AppModule } from '@/app.module';
+} from '@gglk/app.config';
+import { AppModule } from '@gglk/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

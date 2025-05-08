@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSourceConfigService } from '@/common';
+import { DataSourceConfigService } from '@gglk/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 

@@ -8,7 +8,7 @@ import { Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import type { Express } from 'express';
 import redoc from 'redoc-express';
-import { GlobalResponseInterceptor, HttpExceptionFilter } from '@/common';
+import { GlobalResponseInterceptor, HttpExceptionFilter } from '@gglk/common';
 
 // Redoc Setting
 export function ApplicationRedocConfig(app: INestApplication<Express>) {
