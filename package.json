@@ -19,11 +19,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:create": "npm run typeorm -- migration:create",
-    "migration:generate": "npm run build && npm run typeorm -- migration:generate -d src/common/database/config.ts src/migrations/migration_$(date +%Y%m%d%H%M%S)",
-    "migration:run": "npm run build && npm run typeorm -- migration:run -d src/common/database/config.ts",
-    "migration:revert": "npm run build && npm run typeorm -- migration:revert -d src/common/database/config.ts",
-    "prepare": "husky",
+    "migration:create": "yarn run typeorm -- migration:create",
+    "migration:generate": "yarn run build && npm run typeorm -- migration:generate -d src/common/database/config.ts src/migrations/migration_$(date +%Y%m%d%H%M%S)",
+    "migration:run": "yarn run build && npm run typeorm -- migration:run -d src/common/database/config.ts",
+    "migration:revert": "yarn run build && npm run typeorm -- migration:revert -d src/common/database/config.ts",
     "postinstall": "husky"
   },
   "dependencies": {
