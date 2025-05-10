@@ -1,5 +1,17 @@
 # 깔깔룩위원회 Node.js팀
 
+## 실행 방법
+
+```bash
+# 0. 환경 설정
+git clone https://github.com/mash-up-kr/GGLK-Server.git
+cd GGLK-Server
+yarn install
+
+# 1. 도커 실행
+docker-compose up -d
+```
+
 ## Document Route
 
 - Swagger: `/docs`
