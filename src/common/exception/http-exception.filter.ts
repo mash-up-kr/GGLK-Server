@@ -15,13 +15,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
 
     if (exception instanceof BaseException) {
-      response.status(status).json(exception.getResponse());
-    } else {
-      new BaseException(
-        status,
-        exception.message,
-        exception.name,
-      ).getResponse();
+      return response.status(status).json(exception.getResponse());
     }
+    const structedResponse = new BaseException(
+      status,
+      exception.message,
+      exception.name,
+    );
+    return response.status(status).json(structedResponse.getResponse());
   }
 }
