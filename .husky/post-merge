@@ -1,1 +1,1 @@
-yarn install
+yarn install --frozen-lockfile
