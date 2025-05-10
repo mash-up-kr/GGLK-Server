@@ -24,9 +24,9 @@ function AssembleDataSourceOption(
   const isDev = parseEnv('APP_MODE', 'dev') === 'dev';
 
   return {
-    type: 'mysql',
+    type: 'postgres',
     host: parseEnv('DB_HOST', 'localhost'),
-    port: Number(parseEnv('DB_PORT', '3306')),
+    port: Number(parseEnv('DB_PORT', '5432')),
     username: parseEnv('DB_USER', 'root'),
     password: parseEnv('DB_PASSWORD', 'password'),
     database: parseEnv('DB_NAME', 'gglk'),

@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfigService } from '@gglk/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { EvaluationsModule } from './evaluations/evaluations.module';
+import { PicturesModule } from './pictures/pictures.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { AppService } from './app.service';
       useClass: DataSourceConfigService,
       inject: [ConfigService],
     }),
+    UserModule,
+    EvaluationsModule,
+    PicturesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
