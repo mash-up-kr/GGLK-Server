@@ -14,11 +14,8 @@ export class Picture {
   id: number;
 
   @OneToOne(() => Evaluation)
-  @JoinColumn({ name: 'evaluationId' })
+  @JoinColumn()
   evaluation: Evaluation;
-
-  @Column()
-  evaluationId: number;
 
   @Column()
   url: string;

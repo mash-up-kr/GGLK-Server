@@ -13,13 +13,13 @@ export class User {
   id: string;
 
   @Column({ nullable: true })
-  name: string;
+  name: string | null;
 
   @CreateDateColumn()
   createdAt: Date;
 
   @Column({ nullable: true })
-  joinedAt: Date;
+  joinedAt: Date | null;
 
   @Column({ default: false, select: false })
   isDeleted: boolean;
