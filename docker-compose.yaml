@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:15
+    image: postgres:17
     container_name: postgres
     restart: always
     environment:
@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - '5432:5432'
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - db_persist:/var/lib/postgresql/data
     healthcheck:
