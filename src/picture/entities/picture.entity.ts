@@ -6,7 +6,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Evaluation } from '@gglk/evaluations/entities/evaluation.entity';
+import { Evaluation } from '@gglk/evaluation/entities/evaluation.entity';
 
 @Entity('picture')
 export class Picture {
