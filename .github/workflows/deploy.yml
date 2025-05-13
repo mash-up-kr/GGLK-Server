@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - prod
-      - feat/8
 
 jobs:
   deploy:
