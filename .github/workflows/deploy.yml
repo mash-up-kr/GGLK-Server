@@ -47,7 +47,7 @@ jobs:
           REPOSITORY_NAME: ${{ secrets.DOCKER_REPOSITORY_NAME }}
           IMAGE_TAG: ${{  steps.tag_version.outputs.new_tag }}
         run: |
-          DOCKER_IMAGE = $DOCKER_REGISTRY_URL/$REPOSITORY_NAME
+          DOCKER_IMAGE="$DOCKER_REGISTRY_URL/$REPOSITORY_NAME"
 
           docker build -t $DOCKER_IMAGE:$IMAGE_TAG .
           docker image tag $DOCKER_IMAGE:$IMAGE_TAG $DOCKER_IMAGE:latest
@@ -62,9 +62,9 @@ jobs:
           key: ${{ secrets.HOST_KEY }}
           port: ${{ secrets.HOST_PORT }}
           script: |
-            DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
-            REPOSITORY_NAME: ${{ secrets.DOCKER_REPOSITORY_NAME }}
-            DOCKER_IMAGE = $DOCKER_REGISTRY_URL/$REPOSITORY_NAME
+            DOCKER_REGISTRY_URL=${{ secrets.DOCKER_REGISTRY_URL }}
+            REPOSITORY_NAME=${{ secrets.DOCKER_REPOSITORY_NAME }}
+            DOCKER_IMAGE="$DOCKER_REGISTRY_URL/$REPOSITORY_NAME"
 
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
             docker pull $DOCKER_IMAGE:latest
