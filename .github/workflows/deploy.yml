@@ -58,9 +58,9 @@ jobs:
           DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
           REPOSITORY_NAME: ${{ secrets.DOCKER_REPOSITORY_NAME }}
         with:
-          host: ${{ secrets.DEV_HOST_ADDRESS }}
+          host: ${{ secrets.HOST_ADDRESS }}
           username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.DEV_HOST_KEY }}
+          key: ${{ secrets.HOST_KEY }}
           port: ${{ secrets.HOST_PORT }}
           script: |
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
