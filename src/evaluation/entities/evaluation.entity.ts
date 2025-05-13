@@ -2,9 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Picture } from '@gglk/picture/entities/picture.entity';
 import { User } from '@gglk/user/entities/user.entity';
 
 @Entity('evaluation')
@@ -15,8 +18,9 @@ export class Evaluation {
   @ManyToOne(() => User, (user) => user.evaluations)
   user: User;
 
-  @Column()
-  pictureId: number;
+  @OneToOne(() => Picture)
+  @JoinColumn()
+  picture: Picture;
 
   @CreateDateColumn()
   createdAt: Date;
