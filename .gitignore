@@ -1,7 +1,9 @@
 # compiled output
 /dist
+**/dist
 /node_modules
 /build
+**/node_modules
 
 # Logs
 logs
@@ -12,8 +14,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
-
 .yarn/
+**/.yarn
 
 # OS
 .DS_Store
