@@ -6,8 +6,10 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: gglk
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     ports:
       - '3306:3306'
     volumes:
@@ -17,5 +19,15 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  app:
+    container_name: gglk
+    restart: always
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      mysql:
+        condition: service_healthy
+    
 volumes:
   db_persist:
