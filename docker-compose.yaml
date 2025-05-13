@@ -19,15 +19,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  app:
-    container_name: gglk
-    restart: always
-    build: .
-    ports:
-      - ${PORT}:${PORT}
-    depends_on:
-      mysql:
-        condition: service_healthy
     
 volumes:
   db_persist:
