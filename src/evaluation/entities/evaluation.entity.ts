@@ -1,17 +1,16 @@
 import {
-  Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { BaseEntity } from '@gglk/common/entity/base.entity';
 import { Picture } from '@gglk/picture/entities/picture.entity';
 import { User } from '@gglk/user/entities/user.entity';
 
 @Entity('evaluation')
-export class Evaluation {
+export class Evaluation extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -21,10 +20,4 @@ export class Evaluation {
   @OneToOne(() => Picture)
   @JoinColumn()
   picture: Picture;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @Column({ default: false, select: false })
-  isDeleted: boolean;
 }
