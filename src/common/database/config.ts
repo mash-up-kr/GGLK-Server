@@ -27,7 +27,7 @@ function AssembleDataSourceOption(
     type: 'postgres',
     host: parseEnv('DB_HOST', 'localhost'),
     port: Number(parseEnv('DB_PORT', '5432')),
-    username: parseEnv('DB_USER', 'root'),
+    username: parseEnv('DB_USER', 'postgres'),
     password: parseEnv('DB_PASSWORD', 'password'),
     database: parseEnv('DB_NAME', 'gglk'),
     synchronize: isDev,
