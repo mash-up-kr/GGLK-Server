@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class UploadService {
@@ -17,18 +18,13 @@ export class UploadService {
     });
   }
 
-  async uploadFile(
-    file: Express.Multer.File,
-    bucket: string,
-    folder: string = '',
-  ) {
+  async uploadFile(file: ReadStream, bucket: string, key: string = '') {
     try {
       const uploadResult = await this.objectStorage
         .upload({
           Bucket: bucket,
-          Key: folder + file.originalname,
-          Body: file.buffer,
-          ContentType: file.mimetype,
+          Key: key,
+          Body: file,
           ACL: 'public-read',
         })
         .promise();
