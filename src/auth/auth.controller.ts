@@ -31,6 +31,6 @@ export class AuthController {
       maxAge: PROCESS_EXPIRATION_TIME,
     });
 
-    res.redirect(`${process.env.FRONTEND_DEV_URL}?token=${token}`);
+    res.redirect(process.env.FRONTEND_REDIRECT_URI!);
   }
 }
