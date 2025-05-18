@@ -1,5 +1,5 @@
 {
-  "name": "@mash-up-kr/gglk-error-types",
+  "name": "@mashup-node/gglk-error-types",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
