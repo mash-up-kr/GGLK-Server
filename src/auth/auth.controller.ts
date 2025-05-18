@@ -3,6 +3,11 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { AuthService } from '@gglk/auth/auth.service';
+import {
+  COOKIE_SAMESITE,
+  IS_SECURE,
+  PROCESS_EXPIRATION_TIME,
+} from './auth.constant';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +23,14 @@ export class AuthController {
     const user = req.user as UserPayload;
     const payload: UserPayload = new UserPayload(user);
     const token = this.authService.generateToken(payload);
+
+    res.cookie('Authorization', token, {
+      httpOnly: true,
+      secure: IS_SECURE,
+      sameSite: COOKIE_SAMESITE.LAX,
+      maxAge: PROCESS_EXPIRATION_TIME,
+    });
+
     res.redirect(`${process.env.FRONTEND_DEV_URL}?token=${token}`);
   }
 }
