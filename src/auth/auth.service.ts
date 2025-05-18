@@ -6,11 +6,7 @@ import { UserPayload } from '@gglk/auth/auth.interface';
 @Injectable()
 export class AuthService {
   generateToken(user: UserPayload): string {
-    const payload: UserPayload = {
-      id: user.id,
-      email: user.email,
-      nickname: user.nickname,
-    };
+    const payload: UserPayload = new UserPayload(user);
 
     return jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: PROCESS_EXPIRATION_TIME,
