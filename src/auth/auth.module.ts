@@ -1,9 +1,8 @@
-// src/auth/auth.module.ts
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
-import { KakaoStrategy } from './kakao.strategy';
+import { AuthController } from '@gglk/auth/auth.controller';
+import { AuthService } from '@gglk/auth/auth.service';
+import { KakaoStrategy } from '@gglk/auth/strategy/kakao.strategy';
 
 @Module({
   imports: [PassportModule],
