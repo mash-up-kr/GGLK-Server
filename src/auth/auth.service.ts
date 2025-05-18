@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import * as jwt from 'jsonwebtoken';
-import { PROCESS_EXPIRATION_TIME } from '@gglk/auth/auth.constant';
+import { JwtService } from '@nestjs/jwt';
 import { UserPayload } from '@gglk/auth/auth.interface';
 
 @Injectable()
 export class AuthService {
-  generateToken(user: UserPayload): string {
-    const payload: UserPayload = new UserPayload(user);
+  constructor(private readonly jwtService: JwtService) {}
 
-    return jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: PROCESS_EXPIRATION_TIME,
-    });
+  generateToken(user: UserPayload): string {
+    const payload = new UserPayload(user);
+    return this.jwtService.sign(payload);
   }
 }

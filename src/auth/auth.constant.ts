@@ -1,4 +1,4 @@
-// 프로덕션 환경 여부(추후 common으로 뺄 지 논의 필요)
+// TODO 프로덕션 환경 여부(추후 common으로 뺄 지 논의 필요)
 export const IS_PROD = process.env.APP_ENV === 'prod';
 
 // JWT 관련 상수

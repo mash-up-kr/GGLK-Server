@@ -1,13 +1,13 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
-import { UserPayload } from '@gglk/auth/auth.interface';
-import { AuthService } from '@gglk/auth/auth.service';
 import {
   COOKIE_SAMESITE,
   IS_SECURE,
   PROCESS_EXPIRATION_TIME,
-} from './auth.constant';
+} from '@gglk/auth/auth.constant';
+import { UserPayload } from '@gglk/auth/auth.interface';
+import { AuthService } from '@gglk/auth/auth.service';
 
 @Controller('auth')
 export class AuthController {
