@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfigService } from '@gglk/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UploadModule } from './upload/upload.modules';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [

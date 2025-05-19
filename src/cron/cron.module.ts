@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { UploadModule } from '@gglk/upload/upload.modules';
+import { UploadModule } from '@gglk/upload/upload.module';
 import { CronService } from './cron.service';
 
 @Module({
