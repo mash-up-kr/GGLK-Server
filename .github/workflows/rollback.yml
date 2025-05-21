@@ -1,0 +1,85 @@
+name: Rollback To Previous Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      manual_version:
+        description: 'Specify version to rollback to (leave empty for automatic rollback to previous version)'
+        required: false
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get previous release tag
+        id: get_previous_tag
+        run: |
+          ALL_TAGS=$(git tag -l --sort=-v:refname)
+
+          PREVIOUS_TAG=$(echo "$ALL_TAGS" | head -n 2 | tail -n 1)
+
+          if [[ -n "${{ github.event.inputs.manual_version }}" ]]; then
+            PREVIOUS_TAG="${{ github.event.inputs.manual_version }}"
+          fi
+
+          echo "previous_tag=$PREVIOUS_TAG" >> $GITHUB_OUTPUT
+
+      - name: Create .env file
+        run: |
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Pull and deploy previous version
+        id: deploy_previous
+        env:
+          DOCKER_REGISTRY_URL: ${{ secrets.DOCKER_REGISTRY_URL }}
+          REPOSITORY_NAME: ${{ secrets.DOCKER_REPOSITORY_NAME }}
+          PREVIOUS_TAG: ${{ steps.get_previous_tag.outputs.previous_tag }}
+        run: |
+          DOCKER_IMAGE="$DOCKER_REGISTRY_URL/$REPOSITORY_NAME"
+
+          docker pull $DOCKER_IMAGE:$PREVIOUS_TAG
+
+          docker tag $DOCKER_IMAGE:$PREVIOUS_TAG $DOCKER_IMAGE:rollback-latest
+          docker push $DOCKER_IMAGE:rollback-latest
+
+      - name: SSH Remote Commands for Rollback
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_ADDRESS }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.HOST_KEY }}
+          port: ${{ secrets.HOST_PORT }}
+          script: |
+            DOCKER_REGISTRY_URL=${{ secrets.DOCKER_REGISTRY_URL }}
+            REPOSITORY_NAME=${{ secrets.DOCKER_REPOSITORY_NAME }}
+            DOCKER_IMAGE="$DOCKER_REGISTRY_URL/$REPOSITORY_NAME"
+            ROLLBACK_TAG=${{ steps.get_previous_tag.outputs.previous_tag }}
+
+            echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+
+            docker pull $DOCKER_IMAGE:$ROLLBACK_TAG
+
+            CURRENT_CONTAINER=$(docker ps -q --filter ancestor=$DOCKER_IMAGE:latest)
+            if [ -n "$CURRENT_CONTAINER" ]; then
+              echo "Stopping current container: $CURRENT_CONTAINER"
+              docker stop $CURRENT_CONTAINER
+              docker rm $CURRENT_CONTAINER
+            fi
+
+            docker run -d $DOCKER_IMAGE:$ROLLBACK_TAG
