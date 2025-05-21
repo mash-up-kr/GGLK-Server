@@ -1,7 +1,11 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
 export class BaseException extends HttpException {
-  constructor(status: number, message: string | object, errorCode?: string) {
+  constructor(
+    status: number,
+    message: string | Record<string, any>,
+    errorCode?: string,
+  ) {
     super(
       {
         statusCode: status,
