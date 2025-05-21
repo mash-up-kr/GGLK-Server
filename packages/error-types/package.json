@@ -4,7 +4,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "description": "GGLK web frontend, backend error types",
-  "packageManager": "yarn@4.9.1",
   "author": "Mash Up 15th GGLK team",
   "repository": {
     "type": "git",
