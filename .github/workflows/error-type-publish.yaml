@@ -36,8 +36,10 @@ jobs:
 
       - name: Setup NPM Authentication
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> .npmrc
-          cat .npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> ~/.npmrc
+          cat ~/.npmrc
 
       - name: Publish to NPM
-        run: yarn publish:packages
+        run: |
+          cd packages/error-types
+          yarn publish --non-interactive --access public
