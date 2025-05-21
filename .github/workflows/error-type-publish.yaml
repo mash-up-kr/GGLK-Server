@@ -31,7 +31,8 @@ jobs:
         run: |
           git config user.name "${{ secrets.ACTION_GIT_USER_NAME }}"
           git config user.email "${{ secrets.ACTION_GIT_USER_EMAIL }}"
-          yarn version patch -m "chore(release): %s"
+          cd packages/error-types
+          yarn version --new-version patch -m "chore(release): %s"
 
       - name: Publish to NPM
         run: yarn publish:packages
