@@ -59,18 +59,20 @@ export class CronService {
     const filepath = path.join(this.backupDir, filename);
     const gzFilepath = `${filepath}.gz`;
 
+    const DB_USER = process.env.DB_USER ?? 'postgres';
     const DB_NAME = process.env.DB_NAME ?? '';
-    const DB_ROOT_PASSWORD = process.env.DB_ROOT_PASSWORD;
+    const DB_PASSWORD = process.env.DB_PASSWORD;
 
-    this.logger.log('Starting MySQL backup...');
+    this.logger.log('Starting PostgreSQL backup...');
 
     const dump = spawn('docker', [
       'exec',
-      'mysql',
-      'mysqldump',
-      '-u',
-      'root',
-      `-p${DB_ROOT_PASSWORD}`,
+      '-e',
+      `PGPASSWORD=${DB_PASSWORD}`,
+      'postgres',
+      'pg_dump',
+      '-U',
+      DB_USER,
       DB_NAME,
     ]);
 
@@ -78,12 +80,12 @@ export class CronService {
     dump.stdout.pipe(fileStream);
 
     dump.stderr.on('data', (data) => {
-      this.logger.error(`mysqldump stderr: ${data}`);
+      this.logger.error(`postgresqldump stderr: ${data}`);
     });
 
     dump.on('close', (code) => {
       if (code !== 0) {
-        this.logger.error(`mysqldump process end code: ${code}`);
+        this.logger.error(`postgresqldump process end code: ${code}`);
         return;
       }
 
