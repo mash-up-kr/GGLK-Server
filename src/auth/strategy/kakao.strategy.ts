@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-kakao';
+import { Profile, Strategy } from 'passport-kakao';
 
 @Injectable()
 export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
@@ -11,8 +11,13 @@ export class KakaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     });
   }
 
-  validate(accessToken: string, refreshToken: string, profile: any) {
-    console.log(accessToken, refreshToken, profile);
-    return { isLoggedIn: true };
+  validate(accessToken: string, refreshToken: string, profile: Profile) {
+    const id = String(profile.id);
+    const nickname = profile.username || profile.displayName;
+
+    return {
+      id,
+      nickname,
+    };
   }
 }
