@@ -10,8 +10,8 @@
   ],
   "scripts": {
     "build": "nest build",
-    "build:packages": "yarn workspaces foreach --all --parallel run build",
-    "publish:packages": "yarn workspaces foreach --all npm publish",
+    "build:packages": "cd packages/error-types && yarn build",
+    "publish:packages": "cd packages/error-types && yarn publish",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
