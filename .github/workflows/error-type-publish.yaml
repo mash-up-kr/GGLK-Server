@@ -34,8 +34,10 @@ jobs:
           cd packages/error-types
           yarn version --new-version patch -m "chore(release): %s"
 
+      - name: Setup NPM Authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> .npmrc
+          cat .npmrc
+
       - name: Publish to NPM
         run: yarn publish:packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
-          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
