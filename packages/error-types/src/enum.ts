@@ -10,10 +10,10 @@
 
 // Global Module - 0
 
-export enum GlobalErrorKey {
-  PROGRAMATTIC_ERROR = 'PROGRAMATTIC_ERROR',
-  VALIDATION_ERROR = 'VALIDATION_ERROR',
-}
+export const GlobalErrorKey = {
+  PROGRAMATTIC_ERROR: 'PROGRAMATTIC_ERROR',
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+} as const;
 
 const GlobalModuleError = {
   [GlobalErrorKey.PROGRAMATTIC_ERROR]: {
@@ -28,11 +28,11 @@ const GlobalModuleError = {
 
 // Auth Module - 1
 
-export enum AuthModuleKey {
-  UNAUTHORIZED = 'UNAUTHORIZED',
-  INVALID_CREDENTIALS = 'INVALID_CREDENTIALS',
-  FORBIDDEN_REQUEST = 'FORBIDDEN_REQUEST',
-}
+export const AuthModuleKey = {
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  FORBIDDEN_REQUEST: 'FORBIDDEN_REQUEST',
+} as const;
 
 const AuthModuleError = {
   [AuthModuleKey.UNAUTHORIZED]: {
@@ -51,9 +51,9 @@ const AuthModuleError = {
 
 // User Module - 2
 
-export enum UserModuleKey {
-  USER_NOT_FOUND = 'USER_NOT_FOUND',
-}
+export const UserModuleKey = {
+  USER_NOT_FOUND: 'USER_NOT_FOUND',
+} as const;
 
 const UserModuleError = {
   [UserModuleKey.USER_NOT_FOUND]: {

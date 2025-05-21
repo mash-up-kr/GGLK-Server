@@ -25,8 +25,8 @@ jobs:
 
       - name: Version patch and push
         run: |
-          git config user.name "MashUp-Node"
-          git config user.email "mashup.node@gmail.com"
+          git config user.name "${{ secrets.ACTION_GIT_USER_NAME }}"
+          git config user.email "${{ secrets.ACTION_GIT_USER_EMAIL }}"
           npm version patch -m "chore(release): %s"
 
       - name: Publish to NPM
