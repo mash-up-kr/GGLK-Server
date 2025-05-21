@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'packages/**'
+      - '.github/workflows/error-type-publish.yaml'
 
 jobs:
   publish:
