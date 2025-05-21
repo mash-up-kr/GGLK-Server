@@ -11,7 +11,7 @@
   "scripts": {
     "build": "nest build",
     "build:packages": "cd packages/error-types && yarn build",
-    "publish:packages": "cd packages/error-types && yarn publish",
+    "publish:packages": "cd packages/error-types && yarn publish --non-interactive --access public",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
