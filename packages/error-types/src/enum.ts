@@ -7,6 +7,7 @@
  * First number: Module Number
  * Other number: Error Number
  */
+import { HttpStatus } from './status';
 
 // Global Module - 0
 
@@ -18,11 +19,11 @@ export const GlobalErrorKey = {
 const GlobalModuleError = {
   [GlobalErrorKey.PROGRAMATTIC_ERROR]: {
     errorCode: 'G0001',
-    statusCode: 500,
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
   },
   [GlobalErrorKey.VALIDATION_ERROR]: {
     errorCode: 'G0002',
-    statusCode: 400,
+    statusCode: HttpStatus.BAD_REQUEST,
   },
 } as const;
 
@@ -37,15 +38,15 @@ export const AuthModuleKey = {
 const AuthModuleError = {
   [AuthModuleKey.UNAUTHORIZED]: {
     errorCode: 'G1001',
-    statusCode: 401,
+    statusCode: HttpStatus.UNAUTHORIZED,
   },
   [AuthModuleKey.INVALID_CREDENTIALS]: {
     errorCode: 'G1002',
-    statusCode: 401,
+    statusCode: HttpStatus.UNAUTHORIZED,
   },
   [AuthModuleKey.FORBIDDEN_REQUEST]: {
     errorCode: 'G1003',
-    statusCode: 403,
+    statusCode: HttpStatus.FORBIDDEN,
   },
 } as const;
 
@@ -58,7 +59,7 @@ export const UserModuleKey = {
 const UserModuleError = {
   [UserModuleKey.USER_NOT_FOUND]: {
     errorCode: 'G2001',
-    statusCode: 404,
+    statusCode: HttpStatus.NOT_FOUND,
   },
 } as const;
 
