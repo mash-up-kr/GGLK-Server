@@ -86,6 +86,9 @@
       "json",
       "ts"
     ],
+    "moduleNameMapper": {
+      "@gglk/(.*)": "<rootDir>/$1"
+    },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
