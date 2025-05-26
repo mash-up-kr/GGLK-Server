@@ -7,6 +7,7 @@ import { PictureModule } from '@gglk/picture/picture.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { CronModule } from './cron/cron.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     EvaluationModule,
     PictureModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [AppService],
