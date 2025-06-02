@@ -33,8 +33,6 @@ jobs:
           git config user.name "${{ secrets.ACTION_GIT_USER_NAME }}"
           git config user.email "${{ secrets.ACTION_GIT_USER_EMAIL }}"
           yarn version --patch -m "chore(release): %s"
-          git add package.json
-          git commit -m "chore(release): version bump"
           git push origin HEAD
           git push origin --tags
 
