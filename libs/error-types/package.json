@@ -1,11 +1,9 @@
 {
   "name": "@mashup-node/gglk-error-types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/libs/error-types/index.js",
   "scripts": {
-    "build": "nest build error-types",
-    "release:patch": "yarn version --patch && npm publish --access public",
-    "release:minor": "yarn version --minor && npm publish --access public"
+    "build": "nest build error-types"
   },
   "peerDependencies": {
     "@nestjs/common": "^X.Y.Z"
