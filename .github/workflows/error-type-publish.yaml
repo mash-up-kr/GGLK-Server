@@ -24,20 +24,22 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build packages
-        run: yarn build:packages
+      - name: Build library
+        run: yarn build:lib:error-types
 
       - name: Version patch and push
         run: |
+          cd packages/error-types
           git config user.name "${{ secrets.ACTION_GIT_USER_NAME }}"
           git config user.email "${{ secrets.ACTION_GIT_USER_EMAIL }}"
-          cd packages/error-types
-          yarn version --new-version patch -m "chore(release): %s"
+          yarn version --patch -m "chore(release): %s"
+          git add package.json
+          git commit -m "chore(release): version bump"
+          git push origin HEAD
+          git push origin --tags
 
       - name: Setup NPM Authentication
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> ~/.npmrc
-          cat ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> ~/.npmrc
 
       - name: Publish to NPM
         run: |
