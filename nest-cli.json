@@ -13,7 +13,8 @@
       "entryFile": "index",
       "sourceRoot": "libs/error-types/src",
       "compilerOptions": {
-        "tsConfigPath": "libs/error-types/tsconfig.lib.json"
+        "tsConfigPath": "libs/error-types/tsconfig.lib.json",
+        "webpack": false
       }
     }
   }
