@@ -36,10 +36,9 @@ jobs:
           git push origin HEAD
           git push origin --tags
 
-      - name: Setup NPM Authentication
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> ~/.npmrc
-
       - name: Publish to NPM
         run: |
-          cd libs/error-types
-          yarn publish --non-interactive --access public
+          cd packages/error-types
+          yarn publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
