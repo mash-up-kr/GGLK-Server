@@ -4,8 +4,5 @@
   "main": "dist/libs/error-types/index.js",
   "scripts": {
     "build": "nest build error-types"
-  },
-  "peerDependencies": {
-    "@nestjs/common": "^X.Y.Z"
   }
 }

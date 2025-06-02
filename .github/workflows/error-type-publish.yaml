@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'packages/**'
+      - 'libs/error-types/**'
       - '.github/workflows/error-type-publish.yaml'
 
 jobs:
