@@ -1,0 +1,11 @@
+{
+  "name": "@mashup-node/gglk-error-types",
+  "version": "1.0.1",
+  "main": "dist/libs/error-types/index.js",
+  "scripts": {
+    "build": "nest build error-types"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^X.Y.Z"
+  }
+}

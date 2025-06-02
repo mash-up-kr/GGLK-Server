@@ -30,7 +30,7 @@ jobs:
         run: yarn audit || true
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Lint code
         run: yarn lint
