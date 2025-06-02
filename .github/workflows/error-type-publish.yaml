@@ -41,5 +41,5 @@ jobs:
 
       - name: Publish to NPM
         run: |
-          cd packages/error-types
+          cd libs/error-types
           yarn publish --non-interactive --access public
