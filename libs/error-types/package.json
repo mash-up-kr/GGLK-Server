@@ -4,8 +4,6 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "build": "nest build error-types",
-    "prepublishOnly": "cd ../.. && nest build error-types && cd libs/error-types && cp ../../dist/libs/error-types/src/* . && rm -rf src",
-    "postpublish": "git checkout ."
+    "build": "nest build error-types"
   }
 }
