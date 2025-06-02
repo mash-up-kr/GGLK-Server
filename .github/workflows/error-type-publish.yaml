@@ -38,7 +38,7 @@ jobs:
 
       - name: Publish to NPM
         run: |
-          cd packages/error-types
+          cd libs/error-types
           yarn publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
