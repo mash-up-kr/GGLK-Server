@@ -1,0 +1,9 @@
+{
+  "name": "@mashup-node/gglk-error-types",
+  "version": "1.1.2",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "nest build error-types"
+  }
+}

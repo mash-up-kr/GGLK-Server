@@ -20,7 +20,8 @@
     "composite": true,
     "paths": {
       "@gglk/*": ["src/*"],
-      "@mashup-node/gglk-error-types": ["packages/error-types/src"]
+      "error-types": ["libs/error-types/src"],
+      "error-types/*": ["libs/error-types/src/*"]
     }
   }
 }

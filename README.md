@@ -12,6 +12,16 @@ yarn install
 docker-compose up -d
 ```
 
+## Error Types Package
+
+```
+npm i @mashup-node/gglk-error-types
+
+// or
+
+yarn add @mashup-node/gglk-error-types
+```
+
 ## Document Route
 
 - Swagger: `/docs`

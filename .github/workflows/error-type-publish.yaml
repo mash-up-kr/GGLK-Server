@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'packages/**'
+      - 'libs/error-types/**'
       - '.github/workflows/error-type-publish.yaml'
 
 jobs:
@@ -24,22 +24,25 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build packages
-        run: yarn build:packages
+      - name: Build library
+        run: yarn build:lib:error-types
 
       - name: Version patch and push
         run: |
+          cd libs/error-types
           git config user.name "${{ secrets.ACTION_GIT_USER_NAME }}"
           git config user.email "${{ secrets.ACTION_GIT_USER_EMAIL }}"
-          cd packages/error-types
-          yarn version --new-version patch -m "chore(release): %s"
+          yarn version --patch -m "chore(release): %s"
+          git push origin HEAD
 
-      - name: Setup NPM Authentication
+      - name: Prepare for publish
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" >> ~/.npmrc
-          cat ~/.npmrc
+          cp libs/error-types/package.json dist/libs/error-types/src/
+          cp libs/error-types/Readme.md dist/libs/error-types/src/
 
       - name: Publish to NPM
         run: |
-          cd packages/error-types
-          yarn publish --non-interactive --access public
+          cd dist/libs/error-types/src
+          yarn publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}

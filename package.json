@@ -5,14 +5,10 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "build": "nest build",
-    "build:packages": "cd packages/error-types && yarn build",
-    "publish:packages": "cd packages/error-types && yarn publish --non-interactive --access public",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "build:lib:error-types": "nest build error-types",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -93,9 +89,10 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "@gglk/(.*)": "<rootDir>/$1"
+      "@gglk/(.*)": "<rootDir>/$1",
+      "^errors/error-types(|/.*)$": "<rootDir>/libs/error-types/src/$1"
     },
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -103,8 +100,12 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ]
   },
   "lint-staged": {
     "*.ts": [
