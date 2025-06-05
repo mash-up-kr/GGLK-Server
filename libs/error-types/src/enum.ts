@@ -9,6 +9,11 @@
  */
 import { HttpStatus } from './status';
 
+type IErrorPayload = {
+  errorCode: string;
+  statusCode: (typeof HttpStatus)[keyof typeof HttpStatus];
+};
+
 // Global Module - 0
 
 export const GlobalErrorKey = {
@@ -16,7 +21,7 @@ export const GlobalErrorKey = {
   VALIDATION_ERROR: 'VALIDATION_ERROR',
 } as const;
 
-const GlobalModuleError = {
+const GlobalModuleError: Record<string, IErrorPayload> = {
   [GlobalErrorKey.PROGRAMATTIC_ERROR]: {
     errorCode: 'G0001',
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
@@ -35,7 +40,7 @@ export const AuthModuleKey = {
   FORBIDDEN_REQUEST: 'FORBIDDEN_REQUEST',
 } as const;
 
-const AuthModuleError = {
+const AuthModuleError: Record<string, IErrorPayload> = {
   [AuthModuleKey.UNAUTHORIZED]: {
     errorCode: 'G1001',
     statusCode: HttpStatus.UNAUTHORIZED,
@@ -56,15 +61,29 @@ export const UserModuleKey = {
   USER_NOT_FOUND: 'USER_NOT_FOUND',
 } as const;
 
-const UserModuleError = {
+const UserModuleError: Record<string, IErrorPayload> = {
   [UserModuleKey.USER_NOT_FOUND]: {
     errorCode: 'G2001',
     statusCode: HttpStatus.NOT_FOUND,
   },
 } as const;
 
+// Picture Module - 3
+
+export const PictureModuleKey = {
+  PICTURE_NOT_FOUND: 'PICTURE_NOT_FOUND',
+} as const;
+
+const PictureModuleError: Record<string, IErrorPayload> = {
+  [PictureModuleKey.PICTURE_NOT_FOUND]: {
+    errorCode: 'G3001',
+    statusCode: HttpStatus.NOT_FOUND,
+  },
+};
+
 export const ModuleErrors = {
   ...GlobalModuleError,
   ...AuthModuleError,
   ...UserModuleError,
+  ...PictureModuleError,
 };
