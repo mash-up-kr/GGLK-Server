@@ -8,7 +8,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CronModule } from './cron/cron.module';
-import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -20,9 +19,8 @@ import { UserModule } from './user/user.module';
       useClass: DataSourceConfigService,
       inject: [ConfigService],
     }),
-    UploadModule,
-    AuthModule,
     UserModule,
+    AuthModule,
     EvaluationModule,
     PictureModule,
     CronModule,

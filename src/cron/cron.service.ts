@@ -5,7 +5,7 @@ import { spawn } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import { OnlyRunInProduction } from '@gglk/common/decorator/only-run-in-production.decorator';
-import { UploadService } from '@gglk/upload/upload.service';
+import { PictureService } from '@gglk/picture/picture.service';
 
 @Injectable()
 export class CronService {
@@ -13,7 +13,7 @@ export class CronService {
   private readonly backupDir = 'tmp/backup';
 
   constructor(
-    private readonly uploadService: UploadService,
+    private readonly pictureService: PictureService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -42,12 +42,14 @@ export class CronService {
       const s3Key = `db-backup/${path.basename(gzPath)}`;
       const bucket = this.configService.get<string>('NCP_BUCKET_NAME') ?? '';
 
-      void this.uploadService.uploadFile(fileStream, bucket, s3Key).then(() => {
-        fs.unlinkSync(gzPath);
-        this.logger.error(
-          `DB backup in object storage is completed (Code: ${code})`,
-        );
-      });
+      void this.pictureService
+        .savePicture(fileStream, bucket, s3Key)
+        .then(() => {
+          fs.unlinkSync(gzPath);
+          this.logger.error(
+            `DB backup in object storage is completed (Code: ${code})`,
+          );
+        });
     });
   }
 
