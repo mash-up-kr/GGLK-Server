@@ -1,12 +1,50 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { v4 as uuidv4 } from 'uuid';
+import { PictureService } from '@gglk/picture/picture.service';
 import { UploadService } from './upload.service';
 
-@Controller()
+@ApiTags('Upload')
+@Controller('upload')
 export class UploadController {
-  constructor(private readonly uploadService: UploadService) {}
+  private readonly bucket: string;
+  constructor(
+    private readonly uploadService: UploadService,
+    private readonly pictureService: PictureService,
+    private readonly configService: ConfigService,
+  ) {
+    this.bucket = this.configService.get('NCP_BUCKET') ?? '';
+  }
 
-  /**
-   * @Todo
-   * Upload File API 구현 예정 by 재영 or 미나
-   */
+  @Post()
+  @ApiOperation({ summary: '사진 업로드 및 저장' })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        image: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadPicture(@UploadedFile() image: Express.Multer.File) {
+    const key = uuidv4();
+    const url = await this.uploadService.uploadFile(
+      image.buffer,
+      this.bucket,
+      key,
+    );
+    return this.pictureService.savePicture(url, key);
+  }
 }

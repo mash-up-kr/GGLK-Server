@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { ReadStream } from 'fs';
+import { Readable } from 'stream';
 
 @Injectable()
 export class UploadService {
@@ -11,20 +12,22 @@ export class UploadService {
     this.objectStorage = new S3({
       endpoint: this.configService.get('NCP_ENDPOINT') ?? '',
       credentials: {
-        accessKeyId: this.configService.get('NCP_ACCESS_KEY_ID') ?? '',
+        accessKeyId: this.configService.get('NCP_ACCESS_KEY') ?? '',
         secretAccessKey: this.configService.get('NCP_SECRET_ACCESS_KEY') ?? '',
       },
       region: this.configService.get('NCP_REGION') ?? '',
+      s3ForcePathStyle: true,
+      signatureVersion: 'v4',
     });
   }
 
-  async uploadFile(file: ReadStream, bucket: string, key: string = '') {
+  async uploadFile(file: ReadStream | Buffer, bucket: string, key: string) {
     try {
       const uploadResult = await this.objectStorage
         .upload({
           Bucket: bucket,
           Key: key,
-          Body: file,
+          Body: file instanceof Buffer ? Readable.from(file) : file,
           ACL: 'public-read',
         })
         .promise();
@@ -34,5 +37,14 @@ export class UploadService {
       console.error(error);
       throw error;
     }
+  }
+
+  async deleteFile(key: string, bucket: string) {
+    return this.objectStorage
+      .deleteObject({
+        Bucket: bucket,
+        Key: key,
+      })
+      .promise();
   }
 }
