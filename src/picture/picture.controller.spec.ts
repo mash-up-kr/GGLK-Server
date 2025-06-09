@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   MockServiceFactory,
@@ -17,6 +18,10 @@ describe('PictureController', () => {
         {
           provide: PictureService,
           useFactory: MockServiceFactory.getMockService(PictureService),
+        },
+        {
+          provide: ConfigService,
+          useFactory: MockServiceFactory.getMockService(ConfigService),
         },
       ],
     }).compile();
