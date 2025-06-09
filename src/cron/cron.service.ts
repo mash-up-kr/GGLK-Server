@@ -43,7 +43,7 @@ export class CronService {
       const bucket = this.configService.get<string>('NCP_BUCKET_NAME') ?? '';
 
       void this.pictureService
-        .savePicture(fileStream, bucket, s3Key)
+        .savePicture(fileStream, bucket, s3Key, 'application/gzip')
         .then(() => {
           fs.unlinkSync(gzPath);
           this.logger.error(

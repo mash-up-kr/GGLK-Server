@@ -27,7 +27,12 @@ export class PictureService {
     });
   }
 
-  async savePicture(file: ReadStream | Buffer, bucket: string, key: string) {
+  async savePicture(
+    file: ReadStream | Buffer,
+    bucket: string,
+    key: string,
+    contentType: string,
+  ) {
     try {
       const uploadResult = await this.objectStorage
         .upload({
@@ -35,7 +40,7 @@ export class PictureService {
           Key: key,
           Body: file instanceof Buffer ? Readable.from(file) : file,
           ACL: 'public-read',
-          ContentType: 'image/jpeg',
+          ContentType: contentType,
         })
         .promise();
 

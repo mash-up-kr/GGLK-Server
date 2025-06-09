@@ -45,6 +45,7 @@ export class PictureController {
       image.buffer,
       this.bucket,
       key,
+      image.mimetype,
     );
     return picture.id;
   }
