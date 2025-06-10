@@ -19,7 +19,7 @@ export class PictureService {
     this.objectStorage = new S3({
       endpoint: this.configService.get('NCP_ENDPOINT') ?? '',
       credentials: {
-        accessKeyId: this.configService.get('NCP_ACCESS_KEY') ?? '',
+        accessKeyId: this.configService.get('NCP_ACCESS_KEY_ID') ?? '',
         secretAccessKey: this.configService.get('NCP_SECRET_ACCESS_KEY') ?? '',
       },
       region: this.configService.get('NCP_REGION') ?? '',
