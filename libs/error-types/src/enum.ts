@@ -10,24 +10,24 @@
 import { HttpStatus } from './status';
 
 type IErrorPayload = {
-  errorCode: string;
+  errorMessage: string;
   statusCode: (typeof HttpStatus)[keyof typeof HttpStatus];
 };
 
 // Global Module - 0
 
 export const GlobalErrorKey = {
-  PROGRAMATTIC_ERROR: 'PROGRAMATTIC_ERROR',
-  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  PROGRAMATTIC_ERROR: 'G0001',
+  VALIDATION_ERROR: 'G0002',
 } as const;
 
 const GlobalModuleError: Record<string, IErrorPayload> = {
   [GlobalErrorKey.PROGRAMATTIC_ERROR]: {
-    errorCode: 'G0001',
+    errorMessage: 'PROGRAMATTIC_ERROR',
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
   },
   [GlobalErrorKey.VALIDATION_ERROR]: {
-    errorCode: 'G0002',
+    errorMessage: 'VALIDATION_ERROR',
     statusCode: HttpStatus.BAD_REQUEST,
   },
 } as const;
@@ -35,22 +35,22 @@ const GlobalModuleError: Record<string, IErrorPayload> = {
 // Auth Module - 1
 
 export const AuthModuleKey = {
-  UNAUTHORIZED: 'UNAUTHORIZED',
-  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
-  FORBIDDEN_REQUEST: 'FORBIDDEN_REQUEST',
+  UNAUTHORIZED: 'G1001',
+  INVALID_CREDENTIALS: 'G1002',
+  FORBIDDEN_REQUEST: 'G1003',
 } as const;
 
 const AuthModuleError: Record<string, IErrorPayload> = {
   [AuthModuleKey.UNAUTHORIZED]: {
-    errorCode: 'G1001',
+    errorMessage: 'UNAUTHORIZED',
     statusCode: HttpStatus.UNAUTHORIZED,
   },
   [AuthModuleKey.INVALID_CREDENTIALS]: {
-    errorCode: 'G1002',
+    errorMessage: 'INVALID_CREDENTIALS',
     statusCode: HttpStatus.UNAUTHORIZED,
   },
   [AuthModuleKey.FORBIDDEN_REQUEST]: {
-    errorCode: 'G1003',
+    errorMessage: 'FORBIDDEN_REQUEST',
     statusCode: HttpStatus.FORBIDDEN,
   },
 } as const;
@@ -58,12 +58,12 @@ const AuthModuleError: Record<string, IErrorPayload> = {
 // User Module - 2
 
 export const UserModuleKey = {
-  USER_NOT_FOUND: 'USER_NOT_FOUND',
+  USER_NOT_FOUND: 'G2001',
 } as const;
 
 const UserModuleError: Record<string, IErrorPayload> = {
   [UserModuleKey.USER_NOT_FOUND]: {
-    errorCode: 'G2001',
+    errorMessage: 'USER_NOT_FOUND',
     statusCode: HttpStatus.NOT_FOUND,
   },
 } as const;
@@ -71,12 +71,12 @@ const UserModuleError: Record<string, IErrorPayload> = {
 // Picture Module - 3
 
 export const PictureModuleKey = {
-  PICTURE_NOT_FOUND: 'PICTURE_NOT_FOUND',
+  PICTURE_NOT_FOUND: 'G3001',
 } as const;
 
 const PictureModuleError: Record<string, IErrorPayload> = {
   [PictureModuleKey.PICTURE_NOT_FOUND]: {
-    errorCode: 'G3001',
+    errorMessage: 'PICTURE_NOT_FOUND',
     statusCode: HttpStatus.NOT_FOUND,
   },
 };

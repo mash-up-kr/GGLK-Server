@@ -5,7 +5,8 @@ export class PictureNotFoundException extends BaseException {
   constructor() {
     super(
       ModuleErrors[PictureModuleKey.PICTURE_NOT_FOUND].statusCode,
-      ModuleErrors[PictureModuleKey.PICTURE_NOT_FOUND],
+      ModuleErrors[PictureModuleKey.PICTURE_NOT_FOUND].errorMessage,
+      PictureModuleKey.PICTURE_NOT_FOUND,
     );
   }
 }
