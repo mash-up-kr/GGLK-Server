@@ -10,6 +10,8 @@ export class Picture extends BaseEntity {
   @Column()
   url: string;
 
-  @OneToOne(() => Evaluation, (evaluation) => evaluation.picture)
+  @OneToOne(() => Evaluation, (evaluation) => evaluation.picture, {
+    nullable: true,
+  })
   evaluation?: Evaluation;
 }
