@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { ReadStream } from 'fs';
 import { Readable } from 'stream';
+import { NCPNetworkErrorException } from '@gglk/picture/exceptions';
 import { PictureRepository } from './picture.repository';
 
 @Injectable()
@@ -46,24 +47,28 @@ export class PictureService {
 
       const url = uploadResult.Location;
       return this.pictureRepository.savePicture(url, key);
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch {
+      throw new NCPNetworkErrorException();
     }
   }
 
   async deletePicture(id: number) {
     const picture = await this.pictureRepository.findOne({ where: { id } });
     if (!picture) {
-      throw new Error('picture not found');
+      throw new Error('picture not found'); //TODO: Evaluation PR Merge 이후 변경
     }
     await this.pictureRepository.remove(picture);
-    return this.objectStorage
-      .deleteObject({
-        Bucket: this.bucket,
-        Key: picture.key,
-      })
-      .promise();
+
+    try {
+      await this.objectStorage
+        .deleteObject({
+          Bucket: this.bucket,
+          Key: picture.key,
+        })
+        .promise();
+    } catch {
+      throw new NCPNetworkErrorException();
+    }
   }
 
   async getPicture(id: number) {

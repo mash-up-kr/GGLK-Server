@@ -63,8 +63,22 @@ const UserModuleError = {
   },
 } as const;
 
+// Picture Module - 3
+
+export const PictureModuleKey = {
+  NCP_NETWORK_ERROR: 'G3002',
+} as const;
+
+const PictureModuleError = {
+  [PictureModuleKey.NCP_NETWORK_ERROR]: {
+    errorMessage: 'NCP_NETWORK_ERROR',
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+  },
+} as const;
+
 export const ModuleErrors = {
   ...GlobalModuleError,
   ...AuthModuleError,
   ...UserModuleError,
+  ...PictureModuleError,
 };
