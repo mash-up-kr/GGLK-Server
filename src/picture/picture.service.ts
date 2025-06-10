@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { S3 } from 'aws-sdk';
 import { ReadStream } from 'fs';
 import { Readable } from 'stream';
+import { Picture } from '@gglk/picture/entities/picture.entity';
 import { NCPNetworkErrorException } from '@gglk/picture/exceptions';
 import { PictureRepository } from './picture.repository';
 
@@ -33,7 +34,7 @@ export class PictureService {
     bucket: string,
     key: string,
     contentType: string,
-  ) {
+  ): Promise<Picture> {
     try {
       const uploadResult = await this.objectStorage
         .upload({
@@ -46,13 +47,14 @@ export class PictureService {
         .promise();
 
       const url = uploadResult.Location;
-      return this.pictureRepository.savePicture(url, key);
+      const picture = this.pictureRepository.create({ url, key });
+      return this.pictureRepository.save(picture);
     } catch {
       throw new NCPNetworkErrorException();
     }
   }
 
-  async deletePicture(id: number) {
+  async deletePicture(id: number): Promise<void> {
     const picture = await this.pictureRepository.findOne({ where: { id } });
     if (!picture) {
       throw new Error('picture not found'); //TODO: Evaluation PR Merge 이후 변경
@@ -72,6 +74,6 @@ export class PictureService {
   }
 
   async getPicture(id: number) {
-    return await this.pictureRepository.getPicture(id);
+    return await this.pictureRepository.findOne({ where: { id } });
   }
 }
