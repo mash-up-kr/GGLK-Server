@@ -8,8 +8,9 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
+import { PictureDeleteDocs, PictureUploadDocs } from '@gglk/picture/docs';
 import { PictureService } from './picture.service';
 
 @ApiTags('Picture')
@@ -25,19 +26,7 @@ export class PictureController {
   }
 
   @Post()
-  @ApiOperation({ summary: '사진 업로드 및 저장' })
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        image: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
+  @PictureUploadDocs
   @UseInterceptors(FileInterceptor('image'))
   async uploadPicture(@UploadedFile() image: Express.Multer.File) {
     const key = uuidv4();
@@ -51,7 +40,7 @@ export class PictureController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: '사진 삭제' })
+  @PictureDeleteDocs
   async deletePicture(@Param('id') id: number) {
     return await this.picturesService.deletePicture(id);
   }
