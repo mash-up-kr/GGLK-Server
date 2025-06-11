@@ -1,7 +1,9 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import {
   MockRepositoryFactory,
+  MockServiceFactory,
   MockedClass,
 } from '@gglk/common/testing/mock.factory';
 import { PictureRepository } from './picture.repository';
@@ -19,6 +21,10 @@ describe('PictureService', () => {
           provide: getRepositoryToken(PictureRepository),
           useFactory:
             MockRepositoryFactory.getMockRepository(PictureRepository),
+        },
+        {
+          provide: ConfigService,
+          useFactory: MockServiceFactory.getMockService(ConfigService),
         },
       ],
     }).compile();

@@ -70,16 +70,23 @@ const UserModuleError: Record<string, IErrorPayload> = {
 
 // Picture Module - 3
 
+// Picture Module - 3
+
 export const PictureModuleKey = {
   PICTURE_NOT_FOUND: 'G3001',
+  NCP_NETWORK_ERROR: 'G3002',
 } as const;
 
-const PictureModuleError: Record<string, IErrorPayload> = {
+const PictureModuleError = {
+  [PictureModuleKey.NCP_NETWORK_ERROR]: {
+    errorMessage: 'NCP_NETWORK_ERROR',
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+  },
   [PictureModuleKey.PICTURE_NOT_FOUND]: {
     errorMessage: 'PICTURE_NOT_FOUND',
     statusCode: HttpStatus.NOT_FOUND,
   },
-};
+} as const;
 
 export const ModuleErrors = {
   ...GlobalModuleError,
