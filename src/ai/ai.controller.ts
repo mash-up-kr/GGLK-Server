@@ -15,7 +15,7 @@ export class AiController {
     @Body() dto: OotdRoastingRequestDto,
   ): Promise<OotdRoastingResponseDto> {
     const ootdEvaluation = await this.aiService.invokeAiOotdRoasting(
-      dto.image,
+      dto.imageId,
       dto.spicyLevel,
     );
     return new OotdRoastingResponseDto(ootdEvaluation);
