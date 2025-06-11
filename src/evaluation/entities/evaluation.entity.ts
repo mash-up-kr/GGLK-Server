@@ -17,7 +17,10 @@ export class Evaluation extends BaseEntity {
   @ManyToOne(() => User, (user) => user.evaluations)
   user: User;
 
-  @OneToOne(() => Picture)
+  // Owner of foreign Key: Evaluation
+  // 역참조 허용을 위해 Picture, Evaluation간의 상호 OneToOne
+  // 참고: https://orkhan.gitbook.io/typeorm/docs/one-to-one-relations
+  @OneToOne(() => Picture, (picture) => picture.evaluation, { nullable: true })
   @JoinColumn()
-  picture: Picture;
+  picture?: Picture;
 }
