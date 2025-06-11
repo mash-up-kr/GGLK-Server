@@ -15,4 +15,11 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Evaluation, (evaluation) => evaluation.user)
   evaluations: Evaluation[];
+
+  // TODO : 추후 상의 필요
+  @Column({ default: 'kakao', nullable: true })
+  strategyType?: string;
+
+  @Column({ default: false })
+  providerId: string;
 }
