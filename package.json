@@ -90,7 +90,7 @@
     ],
     "moduleNameMapper": {
       "@gglk/(.*)": "<rootDir>/src/$1",
-      "^errors/error-types(|/.*)$": "<rootDir>/libs/error-types/src/$1"
+      "^error-types(|/.*)$": "<rootDir>/libs/error-types/src/$1"
     },
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
