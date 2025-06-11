@@ -1,6 +1,7 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import {
   ApiInternalServerErrorResponse,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiParam,
   ApiResponse,
@@ -16,6 +17,9 @@ export const PictureDeleteDocs = applyDecorators(
   }),
   ApiInternalServerErrorResponse({
     description: `${PictureModuleKey.NCP_NETWORK_ERROR}`,
+  }),
+  ApiNotFoundResponse({
+    description: `${PictureModuleKey.PICTURE_NOT_FOUND}`,
   }),
   ApiResponse({
     status: HttpStatus.OK,

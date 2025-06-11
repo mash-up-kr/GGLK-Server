@@ -4,7 +4,10 @@ import { S3 } from 'aws-sdk';
 import { ReadStream } from 'fs';
 import { Readable } from 'stream';
 import { Picture } from '@gglk/picture/entities/picture.entity';
-import { NCPNetworkErrorException } from '@gglk/picture/exceptions';
+import {
+  NCPNetworkErrorException,
+  PictureNotFoundException,
+} from '@gglk/picture/exceptions';
 import { PictureRepository } from './picture.repository';
 
 @Injectable()
@@ -52,14 +55,10 @@ export class PictureService {
     }
   }
 
-  /**
-   * @TODO
-   * Evaluation PR Merge 이후 정의된 error로 변경
-   */
   async deletePicture(id: number): Promise<void> {
     const picture = await this.pictureRepository.findOne({ where: { id } });
     if (!picture) {
-      throw new Error('picture not found');
+      throw new PictureNotFoundException();
     }
     await this.pictureRepository.remove(picture);
 
