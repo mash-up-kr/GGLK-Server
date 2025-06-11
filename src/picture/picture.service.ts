@@ -24,8 +24,6 @@ export class PictureService {
         secretAccessKey: this.configService.get('NCP_SECRET_ACCESS_KEY') ?? '',
       },
       region: this.configService.get('NCP_REGION') ?? '',
-      s3ForcePathStyle: true,
-      signatureVersion: 'v4',
     });
   }
 
@@ -54,10 +52,14 @@ export class PictureService {
     }
   }
 
+  /**
+   * @TODO
+   * Evaluation PR Merge 이후 정의된 error로 변경
+   */
   async deletePicture(id: number): Promise<void> {
     const picture = await this.pictureRepository.findOne({ where: { id } });
     if (!picture) {
-      throw new Error('picture not found'); //TODO: Evaluation PR Merge 이후 변경
+      throw new Error('picture not found');
     }
     await this.pictureRepository.remove(picture);
 
