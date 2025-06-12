@@ -88,7 +88,7 @@
       "ts"
     ],
     "moduleNameMapper": {
-      "@gglk/(.*)": "<rootDir>/$1",
+      "@gglk/(.*)": "<rootDir>/src/$1",
       "^errors/error-types(|/.*)$": "<rootDir>/libs/error-types/src/$1"
     },
     "rootDir": ".",
