@@ -17,7 +17,7 @@ export class User extends BaseEntity {
   evaluations: Evaluation[];
 
   // TODO : 추후 상의 필요
-  @Column({ default: 'kakao', nullable: true })
+  @Column({ default: 'kakao' })
   strategyType?: string;
 
   @Column({ default: false })
