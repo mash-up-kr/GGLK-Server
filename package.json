@@ -27,6 +27,8 @@
     "postinstall": "husky"
   },
   "dependencies": {
+    "@langchain/core": "^0.3.51",
+    "@langchain/openai": "^0.5.10",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -40,6 +42,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "dotenv": "^16.5.0",
+    "langchain": "^0.3.27",
     "passport": "^0.7.0",
     "passport-kakao": "^1.0.1",
     "pg": "^8.16.0",
@@ -47,7 +50,9 @@
     "redoc-express": "^2.1.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "typeorm": "^0.3.22"
+    "typeorm": "^0.3.22",
+    "zod": "^3.25.30",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -89,7 +94,7 @@
     ],
     "moduleNameMapper": {
       "@gglk/(.*)": "<rootDir>/src/$1",
-      "^errors/error-types(|/.*)$": "<rootDir>/libs/error-types/src/$1"
+      "^error-types(|/.*)$": "<rootDir>/libs/error-types/src/$1"
     },
     "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",

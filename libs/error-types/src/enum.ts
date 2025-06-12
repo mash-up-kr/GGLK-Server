@@ -9,20 +9,25 @@
  */
 import { HttpStatus } from './status';
 
+type IErrorPayload = {
+  errorMessage: string;
+  statusCode: (typeof HttpStatus)[keyof typeof HttpStatus];
+};
+
 // Global Module - 0
 
 export const GlobalErrorKey = {
-  PROGRAMATTIC_ERROR: 'PROGRAMATTIC_ERROR',
-  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  PROGRAMATTIC_ERROR: 'G0001',
+  VALIDATION_ERROR: 'G0002',
 } as const;
 
-const GlobalModuleError = {
+const GlobalModuleError: Record<string, IErrorPayload> = {
   [GlobalErrorKey.PROGRAMATTIC_ERROR]: {
-    errorCode: 'G0001',
+    errorMessage: 'PROGRAMATTIC_ERROR',
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
   },
   [GlobalErrorKey.VALIDATION_ERROR]: {
-    errorCode: 'G0002',
+    errorMessage: 'VALIDATION_ERROR',
     statusCode: HttpStatus.BAD_REQUEST,
   },
 } as const;
@@ -30,22 +35,22 @@ const GlobalModuleError = {
 // Auth Module - 1
 
 export const AuthModuleKey = {
-  UNAUTHORIZED: 'UNAUTHORIZED',
-  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
-  FORBIDDEN_REQUEST: 'FORBIDDEN_REQUEST',
+  UNAUTHORIZED: 'G1001',
+  INVALID_CREDENTIALS: 'G1002',
+  FORBIDDEN_REQUEST: 'G1003',
 } as const;
 
-const AuthModuleError = {
+const AuthModuleError: Record<string, IErrorPayload> = {
   [AuthModuleKey.UNAUTHORIZED]: {
-    errorCode: 'G1001',
+    errorMessage: 'UNAUTHORIZED',
     statusCode: HttpStatus.UNAUTHORIZED,
   },
   [AuthModuleKey.INVALID_CREDENTIALS]: {
-    errorCode: 'G1002',
+    errorMessage: 'INVALID_CREDENTIALS',
     statusCode: HttpStatus.UNAUTHORIZED,
   },
   [AuthModuleKey.FORBIDDEN_REQUEST]: {
-    errorCode: 'G1003',
+    errorMessage: 'FORBIDDEN_REQUEST',
     statusCode: HttpStatus.FORBIDDEN,
   },
 } as const;
@@ -53,12 +58,32 @@ const AuthModuleError = {
 // User Module - 2
 
 export const UserModuleKey = {
-  USER_NOT_FOUND: 'USER_NOT_FOUND',
+  USER_NOT_FOUND: 'G2001',
 } as const;
 
-const UserModuleError = {
+const UserModuleError: Record<string, IErrorPayload> = {
   [UserModuleKey.USER_NOT_FOUND]: {
-    errorCode: 'G2001',
+    errorMessage: 'USER_NOT_FOUND',
+    statusCode: HttpStatus.NOT_FOUND,
+  },
+} as const;
+
+// Picture Module - 3
+
+// Picture Module - 3
+
+export const PictureModuleKey = {
+  PICTURE_NOT_FOUND: 'G3001',
+  NCP_NETWORK_ERROR: 'G3002',
+} as const;
+
+const PictureModuleError = {
+  [PictureModuleKey.NCP_NETWORK_ERROR]: {
+    errorMessage: 'NCP_NETWORK_ERROR',
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+  },
+  [PictureModuleKey.PICTURE_NOT_FOUND]: {
+    errorMessage: 'PICTURE_NOT_FOUND',
     statusCode: HttpStatus.NOT_FOUND,
   },
 } as const;
@@ -67,4 +92,5 @@ export const ModuleErrors = {
   ...GlobalModuleError,
   ...AuthModuleError,
   ...UserModuleError,
+  ...PictureModuleError,
 };

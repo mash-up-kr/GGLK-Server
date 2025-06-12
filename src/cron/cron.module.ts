@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { UploadModule } from '@gglk/upload/upload.module';
+import { PictureModule } from '@gglk/picture/picture.module';
 import { CronService } from './cron.service';
 
 @Module({
-  imports: [ScheduleModule.forRoot(), UploadModule],
+  imports: [ScheduleModule.forRoot(), PictureModule],
   providers: [CronService],
 })
 export class CronModule {}

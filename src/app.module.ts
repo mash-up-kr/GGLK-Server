@@ -4,11 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSourceConfigService } from '@gglk/common';
 import { EvaluationModule } from '@gglk/evaluation/evaluation.module';
 import { PictureModule } from '@gglk/picture/picture.module';
+import { AiModule } from './ai/ai.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { CronModule } from './cron/cron.module';
-import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -20,12 +20,12 @@ import { UserModule } from './user/user.module';
       useClass: DataSourceConfigService,
       inject: [ConfigService],
     }),
-    UploadModule,
-    AuthModule,
     UserModule,
+    AuthModule,
     EvaluationModule,
     PictureModule,
     CronModule,
+    AiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
