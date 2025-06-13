@@ -2,6 +2,8 @@
 
 ## 실행 방법
 
+### bash
+
 ```bash
 # 0. 환경 설정
 git clone https://github.com/mash-up-kr/GGLK-Server.git
@@ -10,6 +12,20 @@ yarn install
 
 # 1. 도커 실행
 docker-compose up -d
+docker ps # 컨테이너 이름 및 상태 확인
+
+# 2. 도커 접속
+docker exec -it postgres psql -U postgres
+```
+
+### sql
+
+```sql
+-- 3. Postgres DB 생성
+CREATE DATABASE gglk;
+
+-- 4. 종료
+\q
 ```
 
 ## Error Types Package

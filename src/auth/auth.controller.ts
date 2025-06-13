@@ -4,6 +4,7 @@ import {
   COOKIE_SAMESITE,
   IS_SECURE,
   PROCESS_EXPIRATION_TIME,
+  STRATEGY_TYPE,
 } from '@gglk/auth/auth.constant';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { AuthService } from '@gglk/auth/auth.service';
@@ -15,12 +16,14 @@ export class AuthController {
 
   @Get('kakao')
   @UseGuards(KakaoGuard)
-  kakaoUnifiedHandler(@Req() req: Request, @Res() res: Response) {
+  async kakaoUnifiedHandler(@Req() req: Request, @Res() res: Response) {
     if (!req.user) return;
-    const user = req.user as UserPayload;
 
-    const payload: UserPayload = user;
-    const token = this.authService.generateToken(payload);
+    const user = req.user as UserPayload;
+    const token = await this.authService.generateToken(
+      user,
+      STRATEGY_TYPE.KAKAO,
+    );
 
     res.cookie('Authorization', token, {
       httpOnly: false,

@@ -9,8 +9,13 @@ export const COOKIE_SAMESITE = {
   STRICT: 'strict', // 동일 사이트 요청에만 쿠키 전송
   NONE: 'none', // 모든 요청에 쿠키 전송 (secure 필요)
 } as const;
+export const STRATEGY_TYPE = {
+  KAKAO: 'kakao', // 카카오 인증 전략
+} as const;
+// 인증 관련 타입 정의
 export type CookieSameSite =
   (typeof COOKIE_SAMESITE)[keyof typeof COOKIE_SAMESITE];
+export type StrategyType = (typeof STRATEGY_TYPE)[keyof typeof STRATEGY_TYPE];
 
 // 인증 관련 에러 메세지
 export const ERROR_MESSAGES = {
