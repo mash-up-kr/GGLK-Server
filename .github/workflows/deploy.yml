@@ -36,7 +36,7 @@ jobs:
           echo "NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}" >> .env
           echo "NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}" >> .env
           echo "NCP_REGION=${{ secrets.NCP_REGION }}" >> .env
-          echo "NCP_BUCKET_NAME=${{ secrets.NCP_BUCKET_NAME }}" >> .env
+          echo "NCP_BUCKET=${{ secrets.NCP_BUCKET }}" >> .env
           echo "JWT_SECRET"="${{ secrets.JWT_SECRET }}" >> .env
           echo "KAKAO_CLIENT_ID"=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
           echo "KAKAO_REDIRECT_DEV_URI"=${{ secrets.KAKAO_REDIRECT_DEV_URI }}" >> .env
