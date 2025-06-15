@@ -22,4 +22,14 @@ export const ERROR_MESSAGES = {
   USER: {
     ID_REQUIRED: '사용자 ID는 필수입니다.',
   },
+  REDIRECT_URL: {
+    NOT_EXIST: 'Redirect URL이 존재하지 않습니다.',
+    NO_ALLOWED: '허용 불가능한 Redirect URL입니다.',
+  },
 } as const;
+// Redirect URL 관리
+export const REDIRECT_WHITELIST = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://ooootd.com',
+];
