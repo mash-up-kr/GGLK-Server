@@ -21,16 +21,18 @@ export class JwtStrategy extends PassportStrategy(
     });
   }
 
-  async validate(payload: UserPayload) {
+  async validate(payload: UserPayload): Promise<UserPayload | false> {
     if (payload.tokenType === TOKEN_TYPE.GUEST) {
       return payload;
     }
-    const user = await this.userRepository.findOne({
+
+    const isUserExist = await this.userRepository.exists({
       where: { id: payload.id },
     });
-    if (!user) {
+    if (!isUserExist) {
       return false;
     }
-    return user;
+
+    return payload;
   }
 }
