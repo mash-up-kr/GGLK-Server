@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import {
   COOKIE_SAMESITE,
@@ -12,6 +12,8 @@ import { UserPayload } from '@gglk/auth/auth.interface';
 import { AuthService } from '@gglk/auth/auth.service';
 import { KakaoGuard } from '@gglk/auth/guard/kakao.guard';
 import { BaseException } from '@gglk/common/exception/base.exception';
+import { GuestTokenDocs } from './docs';
+import { TokenResponseDto } from './dto';
 
 function validateRedirectUrl(url?: string): void {
   if (!url) {
@@ -29,6 +31,15 @@ function validateRedirectUrl(url?: string): void {
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Post('guest')
+  @GuestTokenDocs
+  guestToken() {
+    const token = this.authService.generateGuestToken();
+    return new TokenResponseDto({
+      token,
+    });
+  }
 
   @Get('kakao')
   @UseGuards(KakaoGuard)

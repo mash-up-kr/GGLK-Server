@@ -44,6 +44,7 @@
     "dotenv": "^16.5.0",
     "langchain": "^0.3.27",
     "passport": "^0.7.0",
+    "passport-jwt": "^4.0.1",
     "passport-kakao": "^1.0.1",
     "pg": "^8.16.0",
     "postgres": "^3.4.5",
@@ -51,8 +52,8 @@
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.22",
-    "zod": "^3.25.30",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "zod": "^3.25.30"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -67,6 +68,7 @@
     "@types/jest": "^29.5.14",
     "@types/multer": "^1.4.12",
     "@types/node": "^22.10.7",
+    "@types/passport-jwt": "^4.0.1",
     "@types/passport-kakao": "^1.0.3",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",

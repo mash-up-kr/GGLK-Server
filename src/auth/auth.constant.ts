@@ -1,6 +1,16 @@
 // TODO 프로덕션 환경 여부(추후 common으로 뺄 지 논의 필요)
 export const IS_PROD = process.env.APP_ENV === 'prod';
 
+// Strategy Constant
+export const JWT_STRATEGY_TOKEN = 'jwt';
+
+// JWT Token Type
+export const TOKEN_TYPE = {
+  USER: 'USER',
+  GUEST: 'GUEST',
+} as const;
+export type TOKEN_TYPE = (typeof TOKEN_TYPE)[keyof typeof TOKEN_TYPE];
+
 // JWT 관련 상수
 export const IS_SECURE = IS_PROD ? true : false;
 export const PROCESS_EXPIRATION_TIME = 1000 * 60 * 60 * 24;

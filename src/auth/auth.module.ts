@@ -5,7 +5,9 @@ import { AuthController } from '@gglk/auth/auth.controller';
 import { AuthService } from '@gglk/auth/auth.service';
 import { KakaoStrategy } from '@gglk/auth/strategy/kakao.strategy';
 import { UserModule } from '@gglk/user/user.module';
+import { UserRepository } from '@gglk/user/user.repository';
 import { PROCESS_EXPIRATION_TIME } from './auth.constant';
+import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -16,7 +18,7 @@ import { PROCESS_EXPIRATION_TIME } from './auth.constant';
       signOptions: { expiresIn: PROCESS_EXPIRATION_TIME },
     }),
   ],
-  providers: [KakaoStrategy, AuthService],
+  providers: [UserRepository, KakaoStrategy, AuthService, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}
