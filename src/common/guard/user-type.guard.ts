@@ -18,7 +18,9 @@ export class UserTypeGuard implements CanActivate {
     const request: Request = context.switchToHttp().getRequest();
     const user = request.user as UserPayload;
     if (!user) {
-      console.error('@UserGuard should be defined after @UseGuards(UserGuard)');
+      console.error(
+        '@UserTypeGuard should be defined after @UseGuards(UserGuard)',
+      );
       return false;
     }
     const { tokenType } = user;

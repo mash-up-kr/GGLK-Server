@@ -15,7 +15,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get('/')
+  @Get('/me')
   @UserType(['GUEST'])
   @GetUserDocs
   async getUser(@GetUser() userPayload: UserPayload) {

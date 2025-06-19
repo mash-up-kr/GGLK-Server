@@ -20,6 +20,7 @@ export class JwtStrategy extends PassportStrategy(
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
+
   async validate(payload: UserPayload) {
     if (payload.tokenType === TOKEN_TYPE.GUEST) {
       return payload;
@@ -27,6 +28,9 @@ export class JwtStrategy extends PassportStrategy(
     const user = await this.userRepository.findOne({
       where: { id: payload.id },
     });
+    if (!user) {
+      return false;
+    }
     return user;
   }
 }
