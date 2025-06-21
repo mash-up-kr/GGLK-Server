@@ -3,6 +3,7 @@ import { TOKEN_TYPE } from '@gglk/auth/auth.constant';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { User } from './entities/user.entity';
 import { UserNotFoundException } from './exceptions';
+import { UserAlreadyExistsException } from './exceptions/user-already-exist.exception';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -17,7 +18,7 @@ export class UserService {
     }
 
     // Expect Token Type is not guest
-    const user = await this.findById(userPayload.id!);
+    const user = await this.findById(userPayload.id);
     if (!user) {
       throw new UserNotFoundException();
     }
@@ -27,6 +28,10 @@ export class UserService {
       id: user.id,
       name: user.name,
     };
+  }
+
+  async createGuestUser() {
+    return await this.userRepository.save({});
   }
 
   async findOrCreateUser(
@@ -54,5 +59,38 @@ export class UserService {
     return this.userRepository.findOne({
       where: { id, isDeleted: false },
     });
+  }
+
+  async guestUserMigration(
+    guestUserId: string,
+    userPayload: UserPayload,
+    strategyType: string,
+  ): Promise<User> {
+    // Oauth Provider의 Provider ID가 이미 회원으로서 존재하는 경우 확인해야함 (중복회원 방지)
+    const checkUserExistWithProvider = await this.userRepository.exists({
+      where: {
+        providerId: userPayload.id,
+        strategyType: strategyType,
+      },
+    });
+    if (checkUserExistWithProvider) {
+      throw new UserAlreadyExistsException();
+    }
+
+    const guestUser = await this.findById(guestUserId);
+    if (!guestUser) {
+      throw new UserNotFoundException();
+    }
+
+    // 지정된 Guest User ID가 이미 Oauth 로그인으로 회원이 된 상태인 경우
+    if (guestUser.providerId && guestUser.strategyType) {
+      return guestUser;
+    }
+    guestUser.providerId = userPayload.id;
+    guestUser.strategyType = strategyType;
+    guestUser.joinedAt = new Date();
+    guestUser.name = userPayload.name || guestUser.name || '';
+
+    return this.userRepository.save(guestUser);
   }
 }

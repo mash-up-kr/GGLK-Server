@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { UserRepository } from '@gglk/user/user.repository';
-import { JWT_STRATEGY_TOKEN, TOKEN_TYPE } from '../auth.constant';
+import { JWT_STRATEGY_TOKEN } from '../auth.constant';
 import { UserPayload } from '../auth.interface';
 
 @Injectable()
@@ -22,10 +22,6 @@ export class JwtStrategy extends PassportStrategy(
   }
 
   async validate(payload: UserPayload): Promise<UserPayload | false> {
-    if (payload.tokenType === TOKEN_TYPE.GUEST) {
-      return payload;
-    }
-
     const isUserExist = await this.userRepository.exists({
       where: { id: payload.id },
     });

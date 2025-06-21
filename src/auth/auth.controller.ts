@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiOperation } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import {
   COOKIE_SAMESITE,
@@ -34,8 +35,16 @@ export class AuthController {
 
   @Post('guest')
   @GuestTokenDocs
-  guestToken() {
-    const token = this.authService.generateGuestToken();
+  async guestToken(@Res({ passthrough: true }) response: Response) {
+    const token = await this.authService.generateGuestToken();
+
+    response.cookie('Authorization', token, {
+      httpOnly: false,
+      secure: IS_SECURE,
+      sameSite: COOKIE_SAMESITE.LAX,
+      maxAge: PROCESS_EXPIRATION_TIME,
+    });
+
     return new TokenResponseDto({
       token,
     });
@@ -43,21 +52,54 @@ export class AuthController {
 
   @Get('kakao')
   @UseGuards(KakaoGuard)
+  @ApiOperation({
+    summary: 'Kakao Oauth API',
+    description: `
+    리다이렉트 state 변수에는 아래 두개의 값이 담긴 JSON을 Stringify 후 전달해주어야함
+      {
+        redirectUrl: "(리다이렉트 URL)",
+        guestId: "(기존 Guest User의 토큰 내 ID)"
+      }
+    `,
+  })
   async kakaoUnifiedHandler(
     @Req() request: Request,
     @Res() response: Response,
   ) {
     if (!request.user) return;
+    /**
+     * Frontend에서 state Query String 전달시
+     *
+     * - redirectURL
+     * - guestId
+     *
+     * 이 두개가 담긴 JSON을 Stringify 후 전달해주어야함
+     */
 
     const state = request.query.state as string;
-    const redirectUrl = decodeURIComponent(state);
+    let redirectUrl: string;
+    let guestUserId: string | undefined;
+
+    try {
+      const stateJSON: { redirectUrl: string; guestId: string } = JSON.parse(
+        decodeURIComponent(state),
+      );
+      redirectUrl = stateJSON.redirectUrl;
+      guestUserId = stateJSON.guestId;
+    } catch {
+      redirectUrl = decodeURIComponent(state);
+    }
+
     validateRedirectUrl(redirectUrl);
 
     const user = request.user as UserPayload;
-    const token = await this.authService.generateToken(
-      user,
-      STRATEGY_TYPE.KAKAO,
-    );
+    const token = guestUserId
+      ? await this.authService.generateTokenWithGuestUserMigration(
+          user,
+          STRATEGY_TYPE.KAKAO,
+          guestUserId,
+        )
+      : await this.authService.generateToken(user, STRATEGY_TYPE.KAKAO);
 
     response.cookie('Authorization', token, {
       httpOnly: false,

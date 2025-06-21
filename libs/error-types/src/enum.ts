@@ -59,12 +59,17 @@ const AuthModuleError: Record<string, IErrorPayload> = {
 
 export const UserModuleKey = {
   USER_NOT_FOUND: 'G2001',
+  USER_ALREADY_EXISTS: 'G2002',
 } as const;
 
 const UserModuleError: Record<string, IErrorPayload> = {
   [UserModuleKey.USER_NOT_FOUND]: {
     errorMessage: 'USER_NOT_FOUND',
     statusCode: HttpStatus.NOT_FOUND,
+  },
+  [UserModuleKey.USER_ALREADY_EXISTS]: {
+    errorMessage: 'USER_ALREADY_EXISTS',
+    statusCode: HttpStatus.BAD_REQUEST,
   },
 } as const;
 
