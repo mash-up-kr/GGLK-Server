@@ -59,6 +59,7 @@ const AuthModuleError: Record<string, IErrorPayload> = {
 
 export const UserModuleKey = {
   USER_NOT_FOUND: 'G2001',
+  USER_ALREADY_EXISTS: 'G2002',
 } as const;
 
 const UserModuleError: Record<string, IErrorPayload> = {
@@ -66,9 +67,11 @@ const UserModuleError: Record<string, IErrorPayload> = {
     errorMessage: 'USER_NOT_FOUND',
     statusCode: HttpStatus.NOT_FOUND,
   },
+  [UserModuleKey.USER_ALREADY_EXISTS]: {
+    errorMessage: 'USER_ALREADY_EXISTS',
+    statusCode: HttpStatus.BAD_REQUEST,
+  },
 } as const;
-
-// Picture Module - 3
 
 // Picture Module - 3
 
@@ -77,7 +80,7 @@ export const PictureModuleKey = {
   NCP_NETWORK_ERROR: 'G3002',
 } as const;
 
-const PictureModuleError = {
+const PictureModuleError: Record<string, IErrorPayload> = {
   [PictureModuleKey.NCP_NETWORK_ERROR]: {
     errorMessage: 'NCP_NETWORK_ERROR',
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
