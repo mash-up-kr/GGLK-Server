@@ -4,13 +4,13 @@ export class GetUserResponseDto {
   @ApiProperty()
   isGuest: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, nullable: true })
   id?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, nullable: true })
   name?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false, nullable: true })
   joinedAt?: Date;
 
   constructor(user: GetUserResponseDto) {
