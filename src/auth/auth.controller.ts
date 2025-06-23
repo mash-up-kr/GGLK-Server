@@ -13,11 +13,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('kakao')
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async kakaoRedirectHandler(
-    @Req() request: Request,
-    @Res() response: Response,
-  ) {
+  kakaoRedirectHandler(@Req() request: Request, @Res() response: Response) {
     const state = request.query.state as string;
     const code = request.query.code as string;
     const redirectUrl = decodeURIComponent(state);

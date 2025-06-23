@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import axios from 'axios';
-import { UserPayload } from '@gglk/auth/auth.interface';
+import { KakaoUserResponse, UserPayload } from '@gglk/auth/auth.interface';
 import { UserService } from '@gglk/user/user.service';
 
 @Injectable()
@@ -12,20 +12,20 @@ export class AuthService {
   ) {}
 
   async getKakaoUserByAccessToken(accessToken: string): Promise<UserPayload> {
-    const userRes = await axios.get('https://kapi.kakao.com/v2/user/me', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
+    const userRes = await axios.get<KakaoUserResponse>(
+      'https://kapi.kakao.com/v2/user/me',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       },
-    });
+    );
 
-    const kakaoUser = userRes.data as {
-      id: number | string;
-      properties?: { nickname?: string };
-    };
+    const kakaoUser = userRes.data;
 
     return {
       id: kakaoUser.id.toString(),
-      name: kakaoUser.properties?.nickname ?? 'unknown',
+      name: kakaoUser.properties?.nickname,
     };
   }
 
