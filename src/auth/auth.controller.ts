@@ -7,6 +7,7 @@ import {
   STRATEGY_TYPE,
 } from '@gglk/auth/auth.constant';
 import { AuthService } from '@gglk/auth/auth.service';
+import { KakakoLoginRequestDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
@@ -30,12 +31,15 @@ export class AuthController {
 
   @Post('kakao/login')
   async kakaoLoginHandler(
-    @Body() body: { access_token: string },
+    @Body() body: KakakoLoginRequestDto,
     @Res() res: Response,
   ) {
-    const kakaoUser = await this.authService.getKakaoUserByAccessToken(
-      body.access_token,
+    const access_token = await this.authService.getKakaoUserAccessToken(
+      body.code,
     );
+
+    const kakaoUser =
+      await this.authService.getKakaoUserByAccessToken(access_token);
 
     const token = await this.authService.generateToken(
       kakaoUser,
