@@ -27,19 +27,23 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}" >> .env
-          echo "NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}" >> .env
-          echo "NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}" >> .env
-          echo "NCP_REGION=${{ secrets.NCP_REGION }}" >> .env
-          echo "NCP_BUCKET=${{ secrets.NCP_BUCKET }}" >> .env
-          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
-          echo "KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}" >> .env
+          {
+            echo "DB_HOST=${{ secrets.DB_HOST }}"
+            echo "DB_NAME=${{ secrets.DB_NAME }}"
+            echo "DB_PASSWORD=\"${{ secrets.DB_PASSWORD }}\""
+            echo "DB_USER=${{ secrets.DB_USER }}"
+            echo "DB_PORT=${{ secrets.DB_PORT }}"
+            echo "NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}"
+            echo "NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}"
+            echo "NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}"
+            echo "NCP_REGION=${{ secrets.NCP_REGION }}"
+            echo "NCP_BUCKET=${{ secrets.NCP_BUCKET }}"
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
+            echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}"
+            echo "KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}"
+            echo "PORT=${{ secrets.PORT }}"
+            echo "FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}"
+          } > .env
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -71,8 +75,13 @@ jobs:
           script: |
             DOCKER_REGISTRY_URL=${{ secrets.DOCKER_REGISTRY_URL }}
             REPOSITORY_NAME=${{ secrets.DOCKER_REPOSITORY_NAME }}
+            PORT=${{secrets.PORT}}
             DOCKER_IMAGE="$DOCKER_REGISTRY_URL/$REPOSITORY_NAME"
 
             echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
             docker pull $DOCKER_IMAGE:latest
-            docker run -d $DOCKER_IMAGE:latest
+
+            docker stop $DOCKER_REGISTRY_URL || true
+            docker rm $DOCKER_REGISTRY_URL || true
+
+            docker run -d --name $DOCKER_REGISTRY_URL -p $PORT:$PORT $DOCKER_IMAGE:latest

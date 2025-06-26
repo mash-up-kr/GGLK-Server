@@ -1,34 +1,52 @@
-import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import {
   COOKIE_SAMESITE,
   IS_SECURE,
   PROCESS_EXPIRATION_TIME,
+  STRATEGY_TYPE,
 } from '@gglk/auth/auth.constant';
-import { UserPayload } from '@gglk/auth/auth.interface';
 import { AuthService } from '@gglk/auth/auth.service';
-import { KakaoGuard } from '@gglk/auth/guard/kakao.guard';
+import { KakakoLoginRequestDto } from './dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('kakao')
-  @UseGuards(KakaoGuard)
-  kakaoUnifiedHandler(@Req() req: Request, @Res() res: Response) {
-    if (!req.user) return;
-    const user = req.user as UserPayload;
+  kakaoRedirectHandler(@Req() request: Request, @Res() response: Response) {
+    const state = request.query.state as string;
+    const code = request.query.code as string;
+    const redirectUrl = decodeURIComponent(state);
 
-    const payload: UserPayload = user;
-    const token = this.authService.generateToken(payload);
-
-    res.cookie('Authorization', token, {
+    response.cookie('code', code, {
       httpOnly: false,
       secure: IS_SECURE,
       sameSite: COOKIE_SAMESITE.LAX,
       maxAge: PROCESS_EXPIRATION_TIME,
     });
 
-    res.redirect(process.env.FRONTEND_DEV_URL!);
+    response.redirect(redirectUrl);
+  }
+
+  @Post('kakao/login')
+  async kakaoLoginHandler(
+    @Body() body: KakakoLoginRequestDto,
+    @Res() res: Response,
+  ) {
+    const access_token = await this.authService.getKakaoUserAccessToken(
+      body.code,
+      body.redirectUri,
+    );
+
+    const kakaoUser =
+      await this.authService.getKakaoUserByAccessToken(access_token);
+
+    const token = await this.authService.generateToken(
+      kakaoUser,
+      STRATEGY_TYPE.KAKAO,
+    );
+
+    res.json({ token });
   }
 }

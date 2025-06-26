@@ -38,6 +38,7 @@ export const AuthModuleKey = {
   UNAUTHORIZED: 'G1001',
   INVALID_CREDENTIALS: 'G1002',
   FORBIDDEN_REQUEST: 'G1003',
+  KAKAO_OAUTH_ERROR: 'G1004',
 } as const;
 
 const AuthModuleError: Record<string, IErrorPayload> = {
@@ -52,6 +53,10 @@ const AuthModuleError: Record<string, IErrorPayload> = {
   [AuthModuleKey.FORBIDDEN_REQUEST]: {
     errorMessage: 'FORBIDDEN_REQUEST',
     statusCode: HttpStatus.FORBIDDEN,
+  },
+  [AuthModuleKey.KAKAO_OAUTH_ERROR]: {
+    errorMessage: 'ERROR_WHILE_AUTHORIZING_TO_KAKAO_OAUTH',
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
   },
 } as const;
 
@@ -77,7 +82,7 @@ export const PictureModuleKey = {
   NCP_NETWORK_ERROR: 'G3002',
 } as const;
 
-const PictureModuleError = {
+const PictureModuleError: Record<string, IErrorPayload> = {
   [PictureModuleKey.NCP_NETWORK_ERROR]: {
     errorMessage: 'NCP_NETWORK_ERROR',
     statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
