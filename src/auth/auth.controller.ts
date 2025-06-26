@@ -36,6 +36,7 @@ export class AuthController {
   ) {
     const access_token = await this.authService.getKakaoUserAccessToken(
       body.code,
+      body.redirectUri,
     );
 
     const kakaoUser =

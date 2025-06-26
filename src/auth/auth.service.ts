@@ -14,15 +14,20 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async getKakaoUserAccessToken(code: string) {
+  async getKakaoUserAccessToken(code: string, redirectUri: string) {
     try {
+      const data = new URLSearchParams();
+      data.append('grant_type', 'authorization_code');
+      data.append(
+        'client_id',
+        this.configService.get<string>('KAKAO_CLIENT_ID')!,
+      );
+      data.append('code', code);
+      data.append('redirect_uri', redirectUri);
+
       const response = await axios.post(
         'https://kauth.kakao.com/oauth/token',
-        {
-          grant_type: 'authorization_code',
-          client_id: this.configService.get<string>('KAKAO_CLIENT_ID'),
-          code: code,
-        },
+        data,
         {
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
