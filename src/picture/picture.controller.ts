@@ -4,25 +4,21 @@ import {
   Param,
   Post,
   UploadedFile,
-  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as uuidv4 } from 'uuid';
-import { JwtAuthGuard } from '@gglk/auth/guard/jwt.guard';
-import { UserType } from '@gglk/common/decorator/user-type.decorator';
-import { UserTypeGuard } from '@gglk/common/guard/user-type.guard';
 import {
   PictureControllerDocs,
   PictureDeleteDocs,
   PictureUploadDocs,
 } from '@gglk/picture/docs';
+import { PictureControllerGuardDefinition } from './decorators/picture-controller.decorator';
 import { PictureService } from './picture.service';
 
 @Controller('picture')
-@UserType(['USER', 'GUEST'])
-@UseGuards(JwtAuthGuard, UserTypeGuard)
+@PictureControllerGuardDefinition
 @PictureControllerDocs
 export class PictureController {
   private readonly bucket: string;

@@ -1,16 +1,14 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { UserPayload } from '@gglk/auth/auth.interface';
-import { JwtAuthGuard } from '@gglk/auth/guard/jwt.guard';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
 import { UserType } from '@gglk/common/decorator/user-type.decorator';
-import { UserTypeGuard } from '@gglk/common/guard/user-type.guard';
+import { UserControllerGuardDefinition } from './decorators';
 import { GetUserDocs, UserControllerDocs } from './docs';
 import { GetUserResponseDto } from './dto';
 import { UserService } from './user.service';
 
 @Controller('user')
-@UserType(['USER'])
-@UseGuards(JwtAuthGuard, UserTypeGuard)
+@UserControllerGuardDefinition
 @UserControllerDocs
 export class UserController {
   constructor(private readonly userService: UserService) {}

@@ -3,20 +3,16 @@ import {
   Controller,
   NotImplementedException,
   Post,
-  UseGuards,
 } from '@nestjs/common';
 import { UserPayload } from '@gglk/auth/auth.interface';
-import { JwtAuthGuard } from '@gglk/auth/guard/jwt.guard';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
-import { UserType } from '@gglk/common/decorator/user-type.decorator';
-import { UserTypeGuard } from '@gglk/common/guard/user-type.guard';
 import { AiService } from './ai.service';
+import { AiControllerGuardDefinition } from './decorators';
 import { AiControllerDocs, OotdRoastingDocs } from './docs';
 import { OotdRoastingRequestDto, OotdRoastingResponseDto } from './dto';
 
 @Controller('ai')
-@UserType(['USER', 'GUEST'])
-@UseGuards(JwtAuthGuard, UserTypeGuard)
+@AiControllerGuardDefinition
 @AiControllerDocs
 export class AiController {
   constructor(private readonly aiService: AiService) {}
