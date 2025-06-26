@@ -38,6 +38,7 @@ export const AuthModuleKey = {
   UNAUTHORIZED: 'G1001',
   INVALID_CREDENTIALS: 'G1002',
   FORBIDDEN_REQUEST: 'G1003',
+  KAKAO_OAUTH_ERROR: 'G1004',
 } as const;
 
 const AuthModuleError: Record<string, IErrorPayload> = {
@@ -53,6 +54,10 @@ const AuthModuleError: Record<string, IErrorPayload> = {
     errorMessage: 'FORBIDDEN_REQUEST',
     statusCode: HttpStatus.FORBIDDEN,
   },
+  [AuthModuleKey.KAKAO_OAUTH_ERROR]: {
+    errorMessage: 'ERROR_WHILE_AUTHORIZING_TO_KAKAO_OAUTH',
+    statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+  },
 } as const;
 
 // User Module - 2
@@ -60,6 +65,7 @@ const AuthModuleError: Record<string, IErrorPayload> = {
 export const UserModuleKey = {
   USER_NOT_FOUND: 'G2001',
   USER_ALREADY_EXISTS: 'G2002',
+  GUEST_USER_NOT_FOUND: 'G2003',
 } as const;
 
 const UserModuleError: Record<string, IErrorPayload> = {
@@ -70,6 +76,10 @@ const UserModuleError: Record<string, IErrorPayload> = {
   [UserModuleKey.USER_ALREADY_EXISTS]: {
     errorMessage: 'USER_ALREADY_EXISTS',
     statusCode: HttpStatus.BAD_REQUEST,
+  },
+  [UserModuleKey.GUEST_USER_NOT_FOUND]: {
+    errorMessage: 'GUEST_USER_NOT_FOUND',
+    statusCode: HttpStatus.NOT_FOUND,
   },
 } as const;
 

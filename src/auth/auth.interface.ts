@@ -6,3 +6,11 @@ export interface UserPayload {
   name?: string;
   tokenType: TOKEN_TYPE;
 }
+
+export interface KakaoUserResponse {
+  id: number | string;
+  properties?: {
+    nickname?: string;
+    email?: string;
+  };
+}
