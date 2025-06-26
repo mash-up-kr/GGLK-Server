@@ -4,6 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 import axios, { AxiosError } from 'axios';
 import { KakaoUserResponse, UserPayload } from '@gglk/auth/auth.interface';
 import { UserService } from '@gglk/user/user.service';
+import { TOKEN_TYPE } from './auth.constant';
 import { KakaoOauthException } from './exceptions';
 
 @Injectable()
@@ -61,10 +62,9 @@ export class AuthService {
       );
 
       const kakaoUser = userRes.data;
-      console.log(kakaoUser);
       return {
         id: kakaoUser.id.toString(),
-        name: kakaoUser.properties?.nickname,
+        name: kakaoUser.properties?.nickname ?? '',
       };
     } catch (e) {
       if (e instanceof AxiosError) {
@@ -78,19 +78,51 @@ export class AuthService {
     }
   }
 
-  // 내부 서비스 전용 JWT 토큰 발급
+  async generateGuestToken() {
+    const user = await this.userService.createGuestUser();
+    const payload: UserPayload = {
+      id: user.id,
+      tokenType: TOKEN_TYPE.GUEST,
+    };
+    return this.jwtService.sign(payload);
+  }
+
   async generateToken(
-    userPayload: UserPayload,
+    oauthProivderId: string,
+    userName: string,
     strategyType: string,
   ): Promise<string> {
     const user = await this.userService.findOrCreateUser(
-      userPayload,
+      oauthProivderId,
+      userName,
       strategyType,
     );
 
     return this.jwtService.sign({
       id: user.id,
-      name: user.name,
+      name: user?.name ?? '',
+      tokenType: TOKEN_TYPE.USER,
     });
+  }
+
+  async generateTokenWithGuestUserMigration(
+    oauthProviderId: string,
+    userName: string,
+    strategyType: string,
+    guestUserId: string,
+  ): Promise<string> {
+    const convertedUser = await this.userService.guestUserMigration(
+      guestUserId,
+      oauthProviderId,
+      userName,
+      strategyType,
+    );
+
+    const payload: UserPayload = {
+      id: convertedUser.id,
+      name: convertedUser.name ?? '',
+      tokenType: TOKEN_TYPE.USER,
+    };
+    return this.jwtService.sign(payload);
   }
 }
