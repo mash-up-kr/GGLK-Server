@@ -11,8 +11,8 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "docker:dev:up": "docker compose -f docker-compose.dev.yaml up -d",
     "docker:dev:down": "docker compose -f docker-compose.dev.yaml down",
-    "start": "yarn run migration:run && nest start",
-    "start:dev": "yarn run migration:run && nest start --watch",
+    "start": "nest start",
+    "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -24,6 +24,7 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "yarn run build && yarn run typeorm migration:generate src/migrations/migration_$(date +%Y%m%d%H%M%S) -d src/common/database/config.ts",
     "migration:run": "yarn run build && yarn run typeorm migration:run -d src/common/database/config.ts",
+    "migration:run:without-build": "yarn run typeorm migration:run -d src/common/database/config.ts",
     "migration:revert": "yarn run build && yarn run typeorm migration:revert -d src/common/database/config.ts",
     "postinstall": "husky"
   },
