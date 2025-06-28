@@ -19,11 +19,11 @@ export class KakakoLoginRequestDto {
   redirectUri: string;
 
   @ApiProperty({
-    required: true,
+    required: false,
     description:
       'User가 Guest User로 사용하다가 Oauth 로그인시 guest user id를 함께 주어 실제 사용자로 변경하기 위함입니다.',
   })
   @IsString()
   @IsOptional()
-  guestUserId: string;
+  guestUserId?: string;
 }
