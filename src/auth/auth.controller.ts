@@ -40,7 +40,6 @@ export class AuthController {
   async kakaoLoginHandler(
     @GetUser('id') guestUserId: string,
     @Body() body: KakakoLoginRequestDto,
-    @Res() res: Response,
   ) {
     const access_token = await this.authService.getKakaoUserAccessToken(
       body.code,
@@ -63,6 +62,8 @@ export class AuthController {
           STRATEGY_TYPE.KAKAO,
         );
 
-    res.json({ token });
+    return new TokenResponseDto({
+      token,
+    });
   }
 }
