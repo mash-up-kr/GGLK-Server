@@ -43,6 +43,8 @@ jobs:
           KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}
           PORT=${{ secrets.PORT }}
           FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}
+          OBJECT_STORAGE_PATTERN=${{ secrets.OBJECT_STORAGE_PATTERN }}
+          CDN_PATTERN=${{ secrets.CDN_PATTERN }}
           EOF
 
       - name: Login to GitHub Container Registry
