@@ -1,5 +1,4 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
-import { ApiHeader } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
   COOKIE_SAMESITE,
@@ -8,8 +7,10 @@ import {
   STRATEGY_TYPE,
 } from '@gglk/auth/auth.constant';
 import { AuthService } from '@gglk/auth/auth.service';
-import { RequestHeader } from '@gglk/common/decorator/header-extractor.decorator';
+import { GetUser } from '@gglk/common/decorator/get-user.decorator';
+import { KakaoLoginHandlerGuardDefinition } from './decorator/kakao-login.decorator';
 import { GuestTokenDocs } from './docs';
+import { KakaoLoginHandlerDocs } from './docs/kakao-login.docs';
 import { KakakoLoginRequestDto, TokenResponseDto } from './dto';
 
 @Controller('auth')
@@ -34,14 +35,10 @@ export class AuthController {
   }
 
   @Post('kakao')
-  @ApiHeader({
-    name: 'x-guest-user-id',
-    description:
-      'Guest user id. This is optional and only use when guest user should be migrated to authenticated user',
-    required: false,
-  })
+  @KakaoLoginHandlerGuardDefinition
+  @KakaoLoginHandlerDocs
   async kakaoLoginHandler(
-    @RequestHeader('x-guest-user-id') guestUserId: string,
+    @GetUser('id') guestUserId: string,
     @Body() body: KakakoLoginRequestDto,
     @Res() res: Response,
   ) {
