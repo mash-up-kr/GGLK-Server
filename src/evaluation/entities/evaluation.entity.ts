@@ -17,7 +17,7 @@ export class Evaluation extends BaseEntity {
   nickname: string;
 
   @Column({ type: 'simple-array' })
-  hashTagList: string[];
+  hashtagList: string[];
 
   @Column()
   totalScore: number;
