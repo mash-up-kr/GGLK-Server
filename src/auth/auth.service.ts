@@ -11,6 +11,7 @@ import { KakaoOauthException } from './exceptions';
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
   ) {}
