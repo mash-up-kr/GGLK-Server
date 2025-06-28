@@ -29,10 +29,12 @@ export class AiService {
   async invokeAiOotdRoasting(
     pictrueId: number,
     spicyLevel: number,
+    userId: string,
   ): Promise<OotdRoastingAnalysiType> {
     const pictureInstance = await this.pictureRepositor.findOne({
       where: {
         id: pictrueId,
+        user: { id: userId },
       },
       select: {
         url: true,

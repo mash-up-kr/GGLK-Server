@@ -21,6 +21,7 @@ export class AiController {
     const ootdEvaluation = await this.aiService.invokeAiOotdRoasting(
       dto.imageId,
       dto.spicyLevel,
+      userPayload.id,
     );
     return new OotdRoastingResponseDto(ootdEvaluation);
   }
