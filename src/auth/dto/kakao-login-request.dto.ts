@@ -25,5 +25,5 @@ export class KakakoLoginRequestDto {
   })
   @IsString()
   @IsOptional()
-  guestUserId: string;
+  guestUserId?: string;
 }
