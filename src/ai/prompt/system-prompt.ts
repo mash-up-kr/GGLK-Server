@@ -9,14 +9,6 @@ const COMMON_RULE_SYSTEM_PROMPT = `
 6. The output must be in Korean only and must only include the JSON object.
 7. Do not return or reuse the example outputs as they are.
 You must generate all fields — title, nickname, hashtagList, and totalScore — using the tone and clues from the title.
-
-<<✅ Output Format>>
-{{
-  "title": String (Korean, more than 2 lines),
-  "nickname": String (Korean),
-  "hashtagList": String[],
-  "totalScore": Number (1 to 100)
-}}
 `;
 
 const COMMON_RESPONSE_SYSTEM_PROMPT = `
