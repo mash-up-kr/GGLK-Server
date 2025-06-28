@@ -1,4 +1,5 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
+import { ApiHeader } from '@nestjs/swagger';
 import { Response } from 'express';
 import {
   COOKIE_SAMESITE,
@@ -7,6 +8,7 @@ import {
   STRATEGY_TYPE,
 } from '@gglk/auth/auth.constant';
 import { AuthService } from '@gglk/auth/auth.service';
+import { RequestHeader } from '@gglk/common/decorator/header-extractor.decorator';
 import { GuestTokenDocs } from './docs';
 import { KakakoLoginRequestDto, TokenResponseDto } from './dto';
 
@@ -32,7 +34,14 @@ export class AuthController {
   }
 
   @Post('kakao')
+  @ApiHeader({
+    name: 'x-guest-user-id',
+    description:
+      'Guest user id. This is optional and only use when guest user should be migrated to authenticated user',
+    required: false,
+  })
   async kakaoLoginHandler(
+    @RequestHeader('x-guest-user-id') guestUserId: string,
     @Body() body: KakakoLoginRequestDto,
     @Res() res: Response,
   ) {
@@ -44,12 +53,12 @@ export class AuthController {
     const kakaoUser =
       await this.authService.getKakaoUserByAccessToken(access_token);
 
-    const token = body?.guestUserId
+    const token = guestUserId
       ? await this.authService.generateTokenWithGuestUserMigration(
           kakaoUser.id,
           kakaoUser.name,
           STRATEGY_TYPE.KAKAO,
-          body.guestUserId,
+          guestUserId,
         )
       : await this.authService.generateToken(
           kakaoUser.id,
