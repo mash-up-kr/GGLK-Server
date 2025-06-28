@@ -31,9 +31,15 @@ export class AiService {
     });
   }
 
-  private isTitleLengthValid(title: string): boolean {
-    const length = title.trim().length;
-    return length >= OOTD_TITLE_MIN && length <= OOTD_TITLE_MAX;
+  private isResultValid(result: OotdRoastingAnalysisType): boolean {
+    const titleLength = result.title.trim().length;
+    const nicknameLength = result.nickname.trim().length;
+    const hashtagListLength = result.hashtagList.length;
+    if (titleLength < OOTD_TITLE_MIN || titleLength > OOTD_TITLE_MAX)
+      return false;
+    if (nicknameLength > 7) return false;
+    if (hashtagListLength < 3 || hashtagListLength > 4) return false;
+    return true;
   }
 
   private async getPictureOrThrow(pictureId: number, userId: string) {
@@ -81,7 +87,7 @@ export class AiService {
 
     for (let attempt = 0; attempt < OOTD_ROASTING_MAX_RETRIES; attempt++) {
       const result = (await sequence.invoke({})) as OotdRoastingAnalysisType;
-      if (this.isTitleLengthValid(result.title)) {
+      if (this.isResultValid(result)) {
         return result;
       }
       lastResult = result;

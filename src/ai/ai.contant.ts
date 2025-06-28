@@ -1,4 +1,4 @@
-export const OOTD_TITLE_MIN = 25;
+export const OOTD_TITLE_MIN = 20;
 export const OOTD_TITLE_MAX = 33;
 
 export const OOTD_NICKNAME_MAX = 7;
