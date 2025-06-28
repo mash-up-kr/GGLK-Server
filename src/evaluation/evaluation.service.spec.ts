@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { AiService } from '@gglk/ai/ai.service';
 import {
   MockRepositoryFactory,
+  MockServiceFactory,
   MockedClass,
 } from '@gglk/common/testing/mock.factory';
 import { EvaluationRepository } from './evaluation.repository';
@@ -19,6 +21,10 @@ describe('EvaluationService', () => {
           provide: getRepositoryToken(EvaluationRepository),
           useFactory:
             MockRepositoryFactory.getMockRepository(EvaluationRepository),
+        },
+        {
+          provide: AiService,
+          useFactory: MockServiceFactory.getMockService(AiService),
         },
       ],
     }).compile();
