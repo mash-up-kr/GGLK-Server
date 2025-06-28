@@ -27,23 +27,23 @@ jobs:
 
       - name: Create .env file
         run: |
-          {
-            echo "DB_HOST=${{ secrets.DB_HOST }}"
-            echo "DB_NAME=${{ secrets.DB_NAME }}"
-            echo "DB_PASSWORD=\"${{ secrets.DB_PASSWORD }}\""
-            echo "DB_USER=${{ secrets.DB_USER }}"
-            echo "DB_PORT=${{ secrets.DB_PORT }}"
-            echo "NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}"
-            echo "NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}"
-            echo "NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}"
-            echo "NCP_REGION=${{ secrets.NCP_REGION }}"
-            echo "NCP_BUCKET=${{ secrets.NCP_BUCKET }}"
-            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}"
-            echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}"
-            echo "KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}"
-            echo "PORT=${{ secrets.PORT }}"
-            echo "FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}"
-          } > .env
+          cat << 'EOF' > .env
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_USER=${{ secrets.DB_USER }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}
+          NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}
+          NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}
+          NCP_REGION=${{ secrets.NCP_REGION }}
+          NCP_BUCKET=${{ secrets.NCP_BUCKET }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}
+          KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}
+          PORT=${{ secrets.PORT }}
+          FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}
+          EOF
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
