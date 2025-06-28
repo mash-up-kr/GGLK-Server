@@ -2,11 +2,14 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { OotdRoastingRequestDto } from '@gglk/ai/dto';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
-import { OotdRoastingDocs } from './docs';
+import { EvaluationControllerGuardDefinition } from './decorators';
+import { EvaluationControllerDocs, OotdRoastingDocs } from './docs';
 import { EvaluationResponseDto } from './dto';
 import { EvaluationService } from './evaluation.service';
 
 @Controller('evaluation')
+@EvaluationControllerDocs
+@EvaluationControllerGuardDefinition
 export class EvaluationController {
   constructor(private readonly evaluationsService: EvaluationService) {}
 
