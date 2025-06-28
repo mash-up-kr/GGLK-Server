@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { DeepPartial } from 'typeorm';
 import { AiService } from '@gglk/ai/ai.service';
 import { Evaluation } from './entities/evaluation.entity';
 import { EvaluationRepository } from './evaluation.repository';
@@ -10,10 +9,6 @@ export class EvaluationService {
     private readonly evaluationRepository: EvaluationRepository,
     private readonly aiService: AiService,
   ) {}
-
-  async create(item: DeepPartial<Evaluation>) {
-    return await this.evaluationRepository.save(item);
-  }
 
   async createWithRoasting(
     pictrueId: number,
