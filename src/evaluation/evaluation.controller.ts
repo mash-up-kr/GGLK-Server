@@ -1,10 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { OotdRoastingRequestDto } from '@gglk/ai/dto';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
 import { EvaluationControllerGuardDefinition } from './decorators';
 import { EvaluationControllerDocs, OotdRoastingDocs } from './docs';
-import { EvaluationResponseDto } from './dto';
+import { EvaluationItemResponseDto, EvaluationResponseDto } from './dto';
 import { EvaluationService } from './evaluation.service';
 
 @Controller('evaluation')
@@ -12,6 +12,17 @@ import { EvaluationService } from './evaluation.service';
 @EvaluationControllerGuardDefinition
 export class EvaluationController {
   constructor(private readonly evaluationsService: EvaluationService) {}
+
+  @Get(':id')
+  async getEvaluationById(
+    @Param('id') id: number,
+  ): Promise<EvaluationItemResponseDto> {
+    const evaluation = await this.evaluationsService.findById(id);
+
+    if (!evaluation) throw new Error('');
+
+    return new EvaluationItemResponseDto(evaluation);
+  }
 
   @Post('ootd')
   @OotdRoastingDocs

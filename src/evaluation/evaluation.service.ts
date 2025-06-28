@@ -10,6 +10,13 @@ export class EvaluationService {
     private readonly aiService: AiService,
   ) {}
 
+  async findById(id: number) {
+    return await this.evaluationRepository.findOne({
+      where: { id },
+      relations: { picture: true },
+    });
+  }
+
   async createWithRoasting(
     pictrueId: number,
     spicyLevel: number,
