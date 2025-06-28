@@ -9,6 +9,8 @@
     "build": "nest build",
     "build:lib:error-types": "nest build error-types",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
+    "docker:dev:up": "docker compose -f docker-compose.dev.yaml up -d",
+    "docker:dev:down": "docker compose -f docker-compose.dev.yaml down",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -20,10 +22,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "typeorm-ts-node-commonjs",
-    "migration:create": "yarn run typeorm -- migration:create",
-    "migration:generate": "yarn run build && npm run typeorm -- migration:generate -d src/common/database/config.ts src/migrations/migration_$(date +%Y%m%d%H%M%S)",
-    "migration:run": "yarn run build && npm run typeorm -- migration:run -d src/common/database/config.ts",
-    "migration:revert": "yarn run build && npm run typeorm -- migration:revert -d src/common/database/config.ts",
+    "migration:generate": "yarn run build && yarn run typeorm migration:generate src/migrations/migration_$(date +%Y%m%d%H%M%S) -d src/common/database/config.ts",
+    "migration:run": "yarn run build && yarn run typeorm migration:run -d src/common/database/config.ts",
+    "migration:run:without-build": "yarn run typeorm migration:run -d src/common/database/config.ts",
+    "migration:revert": "yarn run build && yarn run typeorm migration:revert -d src/common/database/config.ts",
     "postinstall": "husky"
   },
   "dependencies": {
