@@ -7,7 +7,7 @@ import {
   Unique,
 } from 'typeorm';
 import { BaseEntity } from '@gglk/common/entity/base.entity';
-import { Evaluation } from '@gglk/evaluation/entities/evaluation.entity';
+import { Picture } from '@gglk/picture/entities/picture.entity';
 
 @Entity('user')
 @Unique(['providerId', 'strategyType'])
@@ -25,8 +25,8 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   joinedAt?: Date;
 
-  @OneToMany(() => Evaluation, (evaluation) => evaluation.user)
-  evaluations: Evaluation[];
+  @OneToMany(() => Picture, (pcitrue) => pcitrue.user)
+  pictures: Picture[];
 
   // TODO : 추후 상의 필요
   @Column({ nullable: true })

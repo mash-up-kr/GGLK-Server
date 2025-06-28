@@ -10,6 +10,13 @@ import {
 } from '@gglk/picture/exceptions';
 import { PictureRepository } from './picture.repository';
 
+interface SaveFileProps {
+  file: ReadStream | Buffer;
+  bucket: string;
+  key: string;
+  contentType: string;
+}
+
 @Injectable()
 export class PictureService {
   private readonly bucket: string;
@@ -30,33 +37,49 @@ export class PictureService {
     });
   }
 
-  async savePicture(
-    file: ReadStream | Buffer,
-    bucket: string,
-    key: string,
-    contentType: string,
-  ): Promise<Picture> {
+  async saveFile({ file, bucket, key, contentType }: SaveFileProps) {
+    return await this.objectStorage
+      .upload({
+        Bucket: bucket,
+        Key: key,
+        Body: file instanceof Buffer ? Readable.from(file) : file,
+        ACL: 'public-read',
+        ContentType: contentType,
+      })
+      .promise();
+  }
+
+  async savePicture({
+    file,
+    bucket,
+    key,
+    contentType,
+    userId,
+  }: SaveFileProps & { userId: string }): Promise<Picture> {
     try {
-      const uploadResult = await this.objectStorage
-        .upload({
-          Bucket: bucket,
-          Key: key,
-          Body: file instanceof Buffer ? Readable.from(file) : file,
-          ACL: 'public-read',
-          ContentType: contentType,
-        })
-        .promise();
+      const uploadResult = await this.saveFile({
+        file,
+        bucket,
+        key,
+        contentType,
+      });
 
       const url = uploadResult.Location;
-      const picture = this.pictureRepository.create({ url, key });
+      const picture = this.pictureRepository.create({
+        url,
+        key,
+        user: { id: userId },
+      });
       return this.pictureRepository.save(picture);
     } catch {
       throw new NCPNetworkErrorException();
     }
   }
 
-  async deletePicture(id: number): Promise<void> {
-    const picture = await this.pictureRepository.findOne({ where: { id } });
+  async deletePicture(id: number, userId: string): Promise<void> {
+    const picture = await this.pictureRepository.findOne({
+      where: { id, user: { id: userId } },
+    });
     if (!picture) {
       throw new PictureNotFoundException();
     }
