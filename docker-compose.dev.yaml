@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: gglk-api-dev
+    restart: always
+    ports:
+      - '8000:8000'
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_NAME=${DB_NAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USER=${DB_USER}
+      - DB_PORT=5432
+      - NCP_ENDPOINT=${NCP_ENDPOINT}
+      - NCP_ACCESS_KEY_ID=${NCP_ACCESS_KEY_ID}
+      - NCP_SECRET_ACCESS_KEY=${NCP_SECRET_ACCESS_KEY}
+      - NCP_REGION=${NCP_REGION}
+      - NCP_BUCKET=${NCP_BUCKET}
+      - JWT_SECRET=${JWT_SECRET}
+      - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
+      - KAKAO_REDIRECT_DEV_URI=${KAKAO_REDIRECT_DEV_URI}
+      - PORT=8000
+      - FRONTEND_DEV_URL=${FRONTEND_DEV_URL}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - .:/app
+    tty: true
+
+  postgres:
+    image: postgres:17
+    container_name: gglk-db-dev
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - db_persist_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db_persist_dev:

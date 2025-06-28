@@ -22,4 +22,4 @@ ENV NODE_ENV=production
 USER node
 
 EXPOSE 8000
-CMD ["node", "dist/src/main.js"]
+CMD ["sh", "-c", "node ./node_modules/.bin/typeorm-ts-node-commonjs migration:run -d dist/src/common/database/config.js && node dist/src/main.js"]
