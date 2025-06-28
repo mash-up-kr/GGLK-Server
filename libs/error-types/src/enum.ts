@@ -101,9 +101,23 @@ const PictureModuleError: Record<string, IErrorPayload> = {
   },
 } as const;
 
+// Evaluation Module - 4
+
+export const EvaluationModuleKey = {
+  EVALUATION_NOT_FOUND: 'G4001',
+} as const;
+
+const EvaluationModuleError: Record<string, IErrorPayload> = {
+  [EvaluationModuleKey.EVALUATION_NOT_FOUND]: {
+    errorMessage: 'EVALUATION_NOT_FOUND',
+    statusCode: HttpStatus.NOT_FOUND,
+  },
+} as const;
+
 export const ModuleErrors = {
   ...GlobalModuleError,
   ...AuthModuleError,
   ...UserModuleError,
   ...PictureModuleError,
+  ...EvaluationModuleError,
 };

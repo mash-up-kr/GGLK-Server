@@ -10,6 +10,7 @@ import {
 } from './docs';
 import { EvaluationItemResponseDto, EvaluationResponseDto } from './dto';
 import { EvaluationService } from './evaluation.service';
+import { EvaluationNotFoundException } from './exceptions/evaluation-not-found.exception';
 
 @Controller('evaluation')
 @EvaluationControllerDocs
@@ -24,7 +25,7 @@ export class EvaluationController {
   ): Promise<EvaluationItemResponseDto> {
     const evaluation = await this.evaluationsService.findById(id);
 
-    if (!evaluation) throw new Error('');
+    if (!evaluation) throw new EvaluationNotFoundException();
 
     return new EvaluationItemResponseDto(evaluation);
   }
