@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { AiService } from '@gglk/ai/ai.service';
@@ -25,6 +26,10 @@ describe('EvaluationService', () => {
         {
           provide: AiService,
           useFactory: MockServiceFactory.getMockService(AiService),
+        },
+        {
+          provide: ConfigService,
+          useFactory: MockServiceFactory.getMockService(ConfigService),
         },
       ],
     }).compile();
