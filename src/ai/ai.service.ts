@@ -17,7 +17,7 @@ export class AiService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly pictureRepositor: PictureRepository,
+    private readonly pictureRepository: PictureRepository,
   ) {
     this.chatModel = new ChatOpenAI({
       apiKey: this.configService.get('OPENAI_API_KEY'),
@@ -31,7 +31,7 @@ export class AiService {
     spicyLevel: number,
     userId: string,
   ): Promise<OotdRoastingAnalysiType> {
-    const pictureInstance = await this.pictureRepositor.findOne({
+    const pictureInstance = await this.pictureRepository.findOne({
       where: {
         id: pictrueId,
         user: { id: userId },
