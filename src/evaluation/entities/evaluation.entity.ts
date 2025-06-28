@@ -1,4 +1,4 @@
-import { Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '@gglk/common/entity/base.entity';
 import { Picture } from '@gglk/picture/entities/picture.entity';
 
@@ -9,4 +9,16 @@ export class Evaluation extends BaseEntity {
 
   @OneToOne(() => Picture, (picture) => picture.evaluation)
   picture: Picture;
+
+  @Column()
+  title: string;
+
+  @Column()
+  nickname: string;
+
+  @Column({ type: 'simple-array' })
+  hashtagList: string[];
+
+  @Column()
+  totalScore: number;
 }

@@ -6,7 +6,6 @@ import { StructuredOutputParser } from 'langchain/output_parsers';
 import { PictureNotFoundException } from '@gglk/picture/exceptions';
 import { PictureRepository } from '@gglk/picture/picture.repository';
 import {
-  type OotdRoastingAnalysiType,
   OotdRoastingAnalysisPrompt,
   OotdRoastingAnalysisSchema,
 } from './schemas/evaluation.schema';
@@ -17,7 +16,7 @@ export class AiService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly pictureRepositor: PictureRepository,
+    private readonly pictureRepository: PictureRepository,
   ) {
     this.chatModel = new ChatOpenAI({
       apiKey: this.configService.get('OPENAI_API_KEY'),
@@ -29,13 +28,17 @@ export class AiService {
   async invokeAiOotdRoasting(
     pictrueId: number,
     spicyLevel: number,
-  ): Promise<OotdRoastingAnalysiType> {
-    const pictureInstance = await this.pictureRepositor.findOne({
+    userId: string,
+  ) {
+    const pictureInstance = await this.pictureRepository.findOne({
       where: {
         id: pictrueId,
+        user: { id: userId },
       },
       select: {
         url: true,
+        id: true,
+        user: { id: true },
       },
     });
 
@@ -59,6 +62,7 @@ export class AiService {
       this.chatModel,
       ootdRoastingParser,
     ]);
+
     return await ootdRoastingSequence.invoke({});
   }
 }
