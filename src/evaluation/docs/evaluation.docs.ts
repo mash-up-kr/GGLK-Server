@@ -23,8 +23,8 @@ export const OotdRoastingDocs = applyDecorators(
 
 export const GetEvaluationDocs = applyDecorators(
   ApiOperation({
-    summary: 'OOTD Ai Roasting',
-    description: 'Image Upload이후 해당 Image의 ID로 요청을 진행해주세요',
+    summary: 'Get Ai Roasted data',
+    description: 'Post 허고 이거 쓰쇼잉',
   }),
   ApiNotFoundResponse({
     description: `${EvaluationModuleKey.EVALUATION_NOT_FOUND}`,
