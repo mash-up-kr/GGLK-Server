@@ -1,11 +1,9 @@
 import { UseGuards, applyDecorators } from '@nestjs/common';
-import { Public } from '@gglk/common/decorator/public.decorator';
+import { JwtAuthGuard } from '@gglk/auth/guard/jwt.guard';
 import { UserType } from '@gglk/common/decorator/user-type.decorator';
 import { UserTypeGuard } from '@gglk/common/guard/user-type.guard';
-import { JwtAuthGuard } from '../guard/jwt.guard';
 
-export const KakaoLoginHandlerGuardDefinition = applyDecorators(
+export const EvaluationControllerGuardDefinition = applyDecorators(
+  UserType(['USER', 'GUEST']),
   UseGuards(JwtAuthGuard, UserTypeGuard),
-  UserType(['GUEST']),
-  Public(),
 );

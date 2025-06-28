@@ -9,6 +9,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as uuidv4 } from 'uuid';
+import { UserPayload } from '@gglk/auth/auth.interface';
+import { GetUser } from '@gglk/common/decorator/get-user.decorator';
 import {
   PictureControllerDocs,
   PictureDeleteDocs,
@@ -33,20 +35,27 @@ export class PictureController {
   @Post()
   @PictureUploadDocs
   @UseInterceptors(FileInterceptor('image'))
-  async uploadPicture(@UploadedFile() image: Express.Multer.File) {
+  async uploadPicture(
+    @GetUser() userPayload: UserPayload,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
     const key = uuidv4();
-    const picture = await this.picturesService.savePicture(
-      image.buffer,
-      this.bucket,
+    const picture = await this.picturesService.savePicture({
+      file: image.buffer,
+      bucket: this.bucket,
       key,
-      image.mimetype,
-    );
+      contentType: image.mimetype,
+      userId: userPayload.id,
+    });
     return picture.id;
   }
 
   @Delete(':id')
   @PictureDeleteDocs
-  async deletePicture(@Param('id') id: number) {
-    return await this.picturesService.deletePicture(id);
+  async deletePicture(
+    @GetUser() userPayload: UserPayload,
+    @Param('id') id: number,
+  ) {
+    return await this.picturesService.deletePicture(id, userPayload.id);
   }
 }

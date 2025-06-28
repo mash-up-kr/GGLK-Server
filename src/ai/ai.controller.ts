@@ -1,27 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { UserPayload } from '@gglk/auth/auth.interface';
-import { GetUser } from '@gglk/common/decorator/get-user.decorator';
+import { Controller } from '@nestjs/common';
 import { AiService } from './ai.service';
 import { AiControllerGuardDefinition } from './decorators';
-import { AiControllerDocs, OotdRoastingDocs } from './docs';
-import { OotdRoastingRequestDto, OotdRoastingResponseDto } from './dto';
+import { AiControllerDocs } from './docs';
 
 @Controller('ai')
 @AiControllerGuardDefinition
 @AiControllerDocs
 export class AiController {
   constructor(private readonly aiService: AiService) {}
-
-  @Post('ootd')
-  @OotdRoastingDocs
-  async doOotdRoasting(
-    @GetUser() userPayload: UserPayload,
-    @Body() dto: OotdRoastingRequestDto,
-  ): Promise<OotdRoastingResponseDto> {
-    const ootdEvaluation = await this.aiService.invokeAiOotdRoasting(
-      dto.imageId,
-      dto.spicyLevel,
-    );
-    return new OotdRoastingResponseDto(ootdEvaluation);
-  }
 }

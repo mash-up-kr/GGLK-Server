@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
+import { UserPayload } from '@gglk/auth/auth.interface';
 import {
   MockServiceFactory,
   MockedClass,
@@ -53,7 +54,12 @@ describe('PictureController', () => {
 
       mockedService.savePicture?.mockResolvedValue(mockPicture);
 
-      const result = await controller.uploadPicture(mockFile);
+      const mockUser: UserPayload = {
+        id: 'c4ad925d-5d63-46c1-9d3e-c4bf459826bd',
+        tokenType: 'GUEST',
+      };
+
+      const result = await controller.uploadPicture(mockUser, mockFile);
 
       expect(mockedService.savePicture).toHaveBeenCalled();
       expect(result).toBe(123);
