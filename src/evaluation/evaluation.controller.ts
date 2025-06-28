@@ -3,7 +3,11 @@ import { OotdRoastingRequestDto } from '@gglk/ai/dto';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
 import { EvaluationControllerGuardDefinition } from './decorators';
-import { EvaluationControllerDocs, OotdRoastingDocs } from './docs';
+import {
+  EvaluationControllerDocs,
+  GetEvaluationDocs,
+  OotdRoastingDocs,
+} from './docs';
 import { EvaluationItemResponseDto, EvaluationResponseDto } from './dto';
 import { EvaluationService } from './evaluation.service';
 
@@ -14,6 +18,7 @@ export class EvaluationController {
   constructor(private readonly evaluationsService: EvaluationService) {}
 
   @Get(':id')
+  @GetEvaluationDocs
   async getEvaluationById(
     @Param('id') id: number,
   ): Promise<EvaluationItemResponseDto> {

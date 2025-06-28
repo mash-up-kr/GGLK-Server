@@ -5,7 +5,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { PictureModuleKey } from 'error-types';
-import { EvaluationResponseDto } from '../dto';
+import { EvaluationItemResponseDto, EvaluationResponseDto } from '../dto';
 
 export const OotdRoastingDocs = applyDecorators(
   ApiOperation({
@@ -18,5 +18,17 @@ export const OotdRoastingDocs = applyDecorators(
   ApiResponse({
     status: HttpStatus.OK,
     type: EvaluationResponseDto,
+  }),
+);
+
+export const GetEvaluationDocs = applyDecorators(
+  ApiOperation({
+    summary: 'OOTD Ai Roasting',
+    description: 'Image Upload이후 해당 Image의 ID로 요청을 진행해주세요',
+  }),
+  ApiNotFoundResponse({}),
+  ApiResponse({
+    status: HttpStatus.OK,
+    type: EvaluationItemResponseDto,
   }),
 );
