@@ -7,7 +7,10 @@ import {
   STRATEGY_TYPE,
 } from '@gglk/auth/auth.constant';
 import { AuthService } from '@gglk/auth/auth.service';
+import { GetUser } from '@gglk/common/decorator/get-user.decorator';
+import { KakaoLoginHandlerGuardDefinition } from './decorator/kakao-login.decorator';
 import { GuestTokenDocs } from './docs';
+import { KakaoLoginHandlerDocs } from './docs/kakao-login.docs';
 import { KakakoLoginRequestDto, TokenResponseDto } from './dto';
 
 @Controller('auth')
@@ -32,7 +35,10 @@ export class AuthController {
   }
 
   @Post('kakao')
+  @KakaoLoginHandlerGuardDefinition
+  @KakaoLoginHandlerDocs
   async kakaoLoginHandler(
+    @GetUser('id') guestUserId: string,
     @Body() body: KakakoLoginRequestDto,
     @Res() res: Response,
   ) {
@@ -44,12 +50,12 @@ export class AuthController {
     const kakaoUser =
       await this.authService.getKakaoUserByAccessToken(access_token);
 
-    const token = body?.guestUserId
+    const token = guestUserId
       ? await this.authService.generateTokenWithGuestUserMigration(
           kakaoUser.id,
           kakaoUser.name,
           STRATEGY_TYPE.KAKAO,
-          body.guestUserId,
+          guestUserId,
         )
       : await this.authService.generateToken(
           kakaoUser.id,
