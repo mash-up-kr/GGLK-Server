@@ -3,6 +3,10 @@ import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
 import type { TOKEN_TYPE } from '@gglk/auth/auth.constant';
 import { UserPayload } from '@gglk/auth/auth.interface';
+import {
+  PublicRouteToken,
+  validatePublicRoute,
+} from '../decorator/public.decorator';
 import { UserType } from '../decorator/user-type.decorator';
 
 @Injectable()
@@ -15,7 +19,18 @@ export class UserTypeGuard implements CanActivate {
      * Check if user's token type is valid for context requested route
      * This decorator SHOULD be used after UserGuard decorator
      */
+
     const request: Request = context.switchToHttp().getRequest();
+    const publicMetadata = this.reflector.getAllAndMerge(PublicRouteToken, [
+      context.getClass(),
+      context.getHandler(),
+    ]);
+
+    // Public Decorator에 대한 확인
+    if (validatePublicRoute(publicMetadata) && !request.user) {
+      return true;
+    }
+
     const user = request.user as UserPayload;
     if (!user) {
       console.error(

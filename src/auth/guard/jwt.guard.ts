@@ -1,7 +1,10 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { PublicRouteToken } from '@gglk/common/decorator/public.decorator';
+import {
+  PublicRouteToken,
+  validatePublicRoute,
+} from '@gglk/common/decorator/public.decorator';
 import { JWT_STRATEGY_TOKEN } from '../auth.constant';
 
 @Injectable()
@@ -21,11 +24,13 @@ export class JwtAuthGuard extends AuthGuard(JWT_STRATEGY_TOKEN) {
       context.getClass(),
       context.getHandler(),
     ]);
-    if (
-      (Array.isArray(publicMetadata) && publicMetadata.length) ||
-      typeof publicMetadata === 'boolean'
-    ) {
-      return true;
+
+    if (validatePublicRoute(publicMetadata)) {
+      try {
+        return (await super.canActivate(context)) as boolean;
+      } catch {
+        return true;
+      }
     }
 
     return (await super.canActivate(context)) as boolean;

@@ -6,7 +6,6 @@ import {
   GuestUserNotFoundException,
   UserNotFoundException,
 } from './exceptions';
-import { UserAlreadyExistsException } from './exceptions/user-already-exist.exception';
 import { UserRepository } from './user.repository';
 
 @Injectable()
@@ -77,14 +76,14 @@ export class UserService {
     }
 
     // Oauth Provider의 Provider ID가 이미 회원으로서 존재하는 경우 확인해야함 (중복회원 방지)
-    const checkUserExistWithProvider = await this.userRepository.exists({
+    const checkUserExistWithProvider = await this.userRepository.findOne({
       where: {
         providerId: oauthProviderId,
         strategyType: strategyType,
       },
     });
     if (checkUserExistWithProvider) {
-      throw new UserAlreadyExistsException();
+      return checkUserExistWithProvider;
     }
 
     // 지정된 Guest User ID가 이미 Oauth 로그인으로 회원이 된 상태인 경우
