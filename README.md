@@ -1,6 +1,44 @@
 # 깔깔룩위원회 Node.js팀
 
-## 실행 방법
+## Dev Docker
+
+File change 바로 컨테이너에 반영됩니다. 별도로 다시 빌드하지 마세요
+
+```
+yarn docker:dev:up
+```
+
+## Development
+
+1. Database Migration
+
+Database 변경사항 발생시 Migration 파일 생성해주세요
+
+```
+yarn migration:generate
+```
+
+2. Run app
+
+start, dev start시에 모두 생성된 마이그레이션 파일을 적용합니다.
+
+```
+yarn start
+
+// or
+
+yarn start:dev
+```
+
+3. Revert migration in case
+
+만약 마이그레이션 롤백이 필요하면 revert하면 됩니다.
+
+```
+yarn migration:revert
+```
+
+### bash
 
 ```bash
 # 0. 환경 설정
@@ -10,6 +48,20 @@ yarn install
 
 # 1. 도커 실행
 docker-compose up -d
+docker ps # 컨테이너 이름 및 상태 확인
+
+# 2. 도커 접속
+docker exec -it postgres psql -U postgres
+```
+
+### sql
+
+```sql
+-- 3. Postgres DB 생성
+CREATE DATABASE gglk;
+
+-- 4. 종료
+\q
 ```
 
 ## Error Types Package

@@ -1,11 +1,23 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { IsEmail } from 'class-validator';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { BaseEntity } from '@gglk/common/entity/base.entity';
 import { Evaluation } from '@gglk/evaluation/entities/evaluation.entity';
 
 @Entity('user')
+@Unique(['providerId', 'strategyType'])
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ nullable: true, unique: true })
+  @IsEmail()
+  email?: string;
 
   @Column({ nullable: true })
   name?: string;
@@ -15,4 +27,11 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Evaluation, (evaluation) => evaluation.user)
   evaluations: Evaluation[];
+
+  // TODO : 추후 상의 필요
+  @Column({ nullable: true })
+  strategyType?: string;
+
+  @Column({ nullable: true })
+  providerId?: string;
 }

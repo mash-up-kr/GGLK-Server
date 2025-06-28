@@ -8,13 +8,18 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
 import { v4 as uuidv4 } from 'uuid';
-import { PictureDeleteDocs, PictureUploadDocs } from '@gglk/picture/docs';
+import {
+  PictureControllerDocs,
+  PictureDeleteDocs,
+  PictureUploadDocs,
+} from '@gglk/picture/docs';
+import { PictureControllerGuardDefinition } from './decorators/picture-controller.decorator';
 import { PictureService } from './picture.service';
 
-@ApiTags('Picture')
 @Controller('picture')
+@PictureControllerGuardDefinition
+@PictureControllerDocs
 export class PictureController {
   private readonly bucket: string;
 

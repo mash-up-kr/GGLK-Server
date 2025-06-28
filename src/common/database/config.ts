@@ -30,10 +30,10 @@ function AssembleDataSourceOption(
     username: parseEnv('DB_USER', 'postgres'),
     password: parseEnv('DB_PASSWORD', 'password'),
     database: parseEnv('DB_NAME', 'gglk'),
-    synchronize: isDev,
+    synchronize: false,
     logging: isDev,
     entities: [join(cwd(), 'dist', '**', `*.entity.js`)],
-    migrations: [join(cwd(), 'dist', 'migrations', '*.js')],
+    migrations: [join(cwd(), 'dist', '**/migrations', '*.js')],
   };
 }
 
