@@ -1,9 +1,7 @@
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { z } from 'zod';
 import {
-  OOTD_HASHTAG_MAX_COUNT,
   OOTD_HASHTAG_MAX_LENGTH,
-  OOTD_HASHTAG_MIN_COUNT,
   OOTD_NICKNAME_MAX,
   OOTD_TITLE_MAX,
   OOTD_TITLE_MIN,
@@ -34,11 +32,8 @@ export const OotdRoastingAnalysisSchema = z.object({
         message: 'Each hashtag must be at most 20 characters',
       }),
     )
-    .min(OOTD_HASHTAG_MIN_COUNT, {
-      message: 'At least 3 hashtags are required',
-    })
-    .max(OOTD_HASHTAG_MAX_COUNT, { message: 'At most 4 hashtags are allowed' })
-    .describe('3 to 4 Korean hashtags roasting the outfit'),
+    .length(4, { message: 'Exactly 4 hashtags are required' })
+    .describe('4 Korean hashtags roasting the outfit'),
   totalScore: z
     .number()
     .min(OOTD_TOTAL_SCORE_MIN, { message: 'Score ootd between 10 ~ 100' })

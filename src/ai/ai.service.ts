@@ -86,11 +86,15 @@ export class AiService {
     let lastResult: OotdRoastingAnalysisType | null = null;
 
     for (let attempt = 0; attempt < OOTD_ROASTING_MAX_RETRIES; attempt++) {
-      const result = (await sequence.invoke({})) as OotdRoastingAnalysisType;
-      if (this.isResultValid(result)) {
-        return result;
+      try {
+        const result = (await sequence.invoke({})) as OotdRoastingAnalysisType;
+        if (this.isResultValid(result)) {
+          return result;
+        }
+        lastResult = result;
+      } catch (err) {
+        console.error(`Attempt ${attempt + 1} failed:`, err);
       }
-      lastResult = result;
     }
 
     throw new Error(

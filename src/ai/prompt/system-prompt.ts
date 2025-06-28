@@ -3,7 +3,7 @@ const COMMON_RULE_SYSTEM_PROMPT = `
 <<📌 Rules>>
 1. "title"은 한국어로 작성하며, 20자 이상 33자 이하로 작성합니다. 제목은 유머러스하고 풍자적인 느낌을 주어야 합니다.
 2. "nickname"은 한국어로 작성하며, 7자 이하로 작성합니다. 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
-3. "hashtagList"는 3~4개의 해시태그로 구성되며, 각 해시태그는 20자 이하로 작성합니다. 해시태그는 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
+3. "hashtagList"는 4개의 해시태그로 구성되며, 각 해시태그는 20자 이하로 작성합니다. 해시태그는 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
 4. The higher the spice level, the more strict it is 
 5. Do not use code blocks (\` \`\`, \`\`\`), markdowns, or any extra text outside the JSON.
 6. The output must be in Korean only and must only include the JSON object.
