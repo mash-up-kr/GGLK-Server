@@ -6,7 +6,6 @@ import { StructuredOutputParser } from 'langchain/output_parsers';
 import { PictureNotFoundException } from '@gglk/picture/exceptions';
 import { PictureRepository } from '@gglk/picture/picture.repository';
 import {
-  type OotdRoastingAnalysiType,
   OotdRoastingAnalysisPrompt,
   OotdRoastingAnalysisSchema,
 } from './schemas/evaluation.schema';
@@ -30,7 +29,7 @@ export class AiService {
     pictrueId: number,
     spicyLevel: number,
     userId: string,
-  ): Promise<OotdRoastingAnalysiType> {
+  ) {
     const pictureInstance = await this.pictureRepository.findOne({
       where: {
         id: pictrueId,
@@ -38,6 +37,8 @@ export class AiService {
       },
       select: {
         url: true,
+        id: true,
+        user: { id: true },
       },
     });
 
@@ -61,6 +62,7 @@ export class AiService {
       this.chatModel,
       ootdRoastingParser,
     ]);
+
     return await ootdRoastingSequence.invoke({});
   }
 }

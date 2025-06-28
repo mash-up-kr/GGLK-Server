@@ -5,7 +5,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { PictureModuleKey } from 'error-types';
-import { OotdRoastingResponseDto } from '../dto';
+import { EvaluationResponseDto } from '../dto';
 
 export const OotdRoastingDocs = applyDecorators(
   ApiOperation({
@@ -17,6 +17,6 @@ export const OotdRoastingDocs = applyDecorators(
   }),
   ApiResponse({
     status: HttpStatus.OK,
-    type: OotdRoastingResponseDto,
+    type: EvaluationResponseDto,
   }),
 );
