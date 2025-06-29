@@ -27,25 +27,24 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat << 'EOF' > .env
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_NAME=${{ secrets.DB_NAME }}
-          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          DB_USER=${{ secrets.DB_USER }}
-          DB_PORT=${{ secrets.DB_PORT }}
-          NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}
-          NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}
-          NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}
-          NCP_REGION=${{ secrets.NCP_REGION }}
-          NCP_BUCKET=${{ secrets.NCP_BUCKET }}
-          JWT_SECRET=${{ secrets.JWT_SECRET }}
-          KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}
-          KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}
-          PORT=${{ secrets.PORT }}
-          FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}
-          OBJECT_STORAGE_PATTERN=${{ secrets.OBJECT_STORAGE_PATTERN }}
-          CDN_PATTERN=${{ secrets.CDN_PATTERN }}
-          EOF
+          echo "DB_HOST=${{ secrets.DB_HOST }}" > .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+          echo "NCP_ENDPOINT=${{ secrets.NCP_ENDPOINT }}" >> .env
+          echo "NCP_ACCESS_KEY_ID=${{ secrets.NCP_ACCESS_KEY_ID }}" >> .env
+          echo "NCP_SECRET_ACCESS_KEY=${{ secrets.NCP_SECRET_ACCESS_KEY }}" >> .env
+          echo "NCP_REGION=${{ secrets.NCP_REGION }}" >> .env
+          echo "NCP_BUCKET=${{ secrets.NCP_BUCKET }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "KAKAO_REDIRECT_DEV_URI=${{ secrets.KAKAO_REDIRECT_DEV_URI }}" >> .env
+          echo "PORT=${{ secrets.PORT }}" >> .env
+          echo "FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}" >> .env
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "OBJECT_STORAGE_PATTERN=${{ secrets.OBJECT_STORAGE_PATTERN }}" >> .env
+          echo "CDN_PATTERN=${{ secrets.CDN_PATTERN }}" >> .env
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
