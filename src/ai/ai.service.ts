@@ -3,12 +3,18 @@ import { ConfigService } from '@nestjs/config';
 import { RunnableLambda, RunnableSequence } from '@langchain/core/runnables';
 import { ChatOpenAI } from '@langchain/openai';
 import { StructuredOutputParser } from 'langchain/output_parsers';
-import { PictureNotFoundException } from '@gglk/picture/exceptions';
-import { PictureRepository } from '@gglk/picture/picture.repository';
+import {
+  OOTD_ROASTING_MAX_RETRIES,
+  OOTD_TITLE_MAX,
+  OOTD_TITLE_MIN,
+} from '@gglk/ai/ai.contant';
 import {
   OotdRoastingAnalysisPrompt,
   OotdRoastingAnalysisSchema,
-} from './schemas/evaluation.schema';
+  OotdRoastingAnalysisType,
+} from '@gglk/ai/schemas/evaluation.schema';
+import { PictureNotFoundException } from '@gglk/picture/exceptions';
+import { PictureRepository } from '@gglk/picture/picture.repository';
 
 @Injectable()
 export class AiService {
@@ -25,14 +31,21 @@ export class AiService {
     });
   }
 
-  async invokeAiOotdRoasting(
-    pictrueId: number,
-    spicyLevel: number,
-    userId: string,
-  ) {
-    const pictureInstance = await this.pictureRepository.findOne({
+  private isResultValid(result: OotdRoastingAnalysisType): boolean {
+    const titleLength = result.title.trim().length;
+    const nicknameLength = result.nickname.trim().length;
+    const hashtagListLength = result.hashtagList.length;
+    if (titleLength < OOTD_TITLE_MIN || titleLength > OOTD_TITLE_MAX)
+      return false;
+    if (nicknameLength > 7) return false;
+    if (hashtagListLength < 3 || hashtagListLength > 4) return false;
+    return true;
+  }
+
+  private async getPictureOrThrow(pictureId: number, userId: string) {
+    const picture = await this.pictureRepository.findOne({
       where: {
-        id: pictrueId,
+        id: pictureId,
         user: { id: userId },
       },
       select: {
@@ -42,27 +55,63 @@ export class AiService {
       },
     });
 
-    if (!pictureInstance) {
-      throw new PictureNotFoundException();
-    }
+    if (!picture) throw new PictureNotFoundException();
+    return picture;
+  }
 
-    const ootdRoastingParser = StructuredOutputParser.fromZodSchema(
+  private buildRoastingSequence(imageUrl: string, spicyLevel: number) {
+    const ootdRoastParser = StructuredOutputParser.fromZodSchema(
       OotdRoastingAnalysisSchema,
     );
 
-    const ootdRoastingSequence = RunnableSequence.from([
-      RunnableLambda.from(() => {
-        return OotdRoastingAnalysisPrompt(
-          pictureInstance.url,
-          spicyLevel,
-        ).formatMessages({
-          schemaInstruction: ootdRoastingParser.getFormatInstructions(),
-        });
-      }),
-      this.chatModel,
-      ootdRoastingParser,
-    ]);
+    const ootdRoastingSequence = RunnableLambda.from(() => {
+      return OotdRoastingAnalysisPrompt(imageUrl, spicyLevel).formatMessages({
+        schemaInstruction: ootdRoastParser.getFormatInstructions(),
+      });
+    });
 
-    return await ootdRoastingSequence.invoke({});
+    return {
+      sequence: RunnableSequence.from([
+        ootdRoastingSequence,
+        this.chatModel,
+        ootdRoastParser,
+      ]),
+      promptStep: ootdRoastingSequence,
+    };
+  }
+
+  private async retryUntilValidTitle(
+    sequence: RunnableSequence,
+  ): Promise<OotdRoastingAnalysisType> {
+    let lastResult: OotdRoastingAnalysisType | null = null;
+
+    for (let attempt = 0; attempt < OOTD_ROASTING_MAX_RETRIES; attempt++) {
+      try {
+        const result = (await sequence.invoke({})) as OotdRoastingAnalysisType;
+        if (this.isResultValid(result)) {
+          return result;
+        }
+        lastResult = result;
+      } catch (err) {
+        console.error(`Attempt ${attempt + 1} failed:`, err);
+      }
+    }
+
+    throw new Error(
+      `유효한 글자 수(${OOTD_TITLE_MIN}~${OOTD_TITLE_MAX}자)의 한글 제목을 생성하지 못했습니다. 마지막 시도 결과: ${lastResult?.title}`,
+    );
+  }
+
+  async invokeAiOotdRoasting(
+    pictureId: number,
+    spicyLevel: number,
+    userId: string,
+  ) {
+    const pictureInstance = await this.getPictureOrThrow(pictureId, userId);
+    const { sequence } = this.buildRoastingSequence(
+      pictureInstance.url,
+      spicyLevel,
+    );
+    return this.retryUntilValidTitle(sequence);
   }
 }
