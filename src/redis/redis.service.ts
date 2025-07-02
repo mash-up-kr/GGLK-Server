@@ -37,7 +37,7 @@ export class RedisService {
     return !!isUsed;
   }
 
-  async setChangeUsed(userId: string): Promise<void> {
+  async setChanceUsed(userId: string): Promise<void> {
     const index = await this.changeUUIDToIndex(userId);
 
     await this.redisClient.setbit(REDIS_CHECK_IF_CHANGE_USED_KEY, index, 1);
