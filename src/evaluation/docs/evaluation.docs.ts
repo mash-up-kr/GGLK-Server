@@ -1,10 +1,15 @@
 import { HttpStatus, applyDecorators } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
 } from '@nestjs/swagger';
-import { EvaluationModuleKey, PictureModuleKey } from 'error-types';
+import {
+  EvaluationModuleKey,
+  PictureModuleKey,
+  RedisModuleKey,
+} from 'error-types';
 import { EvaluationItemResponseDto, EvaluationResponseDto } from '../dto';
 
 export const OotdRoastingDocs = applyDecorators(
@@ -14,6 +19,9 @@ export const OotdRoastingDocs = applyDecorators(
   }),
   ApiNotFoundResponse({
     description: `${PictureModuleKey.PICTURE_NOT_FOUND}`,
+  }),
+  ApiBadRequestResponse({
+    description: `${RedisModuleKey.REDIS_BAD_REQUEST}`,
   }),
   ApiResponse({
     status: HttpStatus.OK,
