@@ -34,3 +34,16 @@ export const GetEvaluationDocs = applyDecorators(
     type: EvaluationItemResponseDto,
   }),
 );
+
+export const CheckEvaluationDocs = applyDecorators(
+  ApiOperation({
+    summary: 'Check if guest user use change',
+    description: '게스트 유저가 기회 사용했는지 확인',
+  }),
+  ApiResponse({
+    status: HttpStatus.OK,
+    schema: {
+      type: 'boolean',
+    },
+  }),
+);
