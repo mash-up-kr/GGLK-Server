@@ -1,10 +1,18 @@
+import {
+  OOTD_HASHTAG_MAX_COUNT,
+  OOTD_HASHTAG_MAX_LENGTH,
+  OOTD_NICKNAME_MAX,
+  OOTD_TITLE_MAX,
+  OOTD_TITLE_MIN,
+} from '@gglk/ai/ai.contant';
+
 // 공통 시스템 프롬프트
 const COMMON_RULE_SYSTEM_PROMPT = `
 <<📌 Rules>>
-1. "title"은 한국어로 작성하며, 공백 포함 25자 이상 33자 이하로 작성합니다. 제목은 유머러스하고 풍자적인 느낌을 주어야 합니다.
-2. "nickname"은 한국어로 작성하며, 공백 포함 7자 이하로 작성합니다. 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
-3. "hashtagList"는 4개의 해시태그로 구성되며, 각 해시태그는 공백 포함 20자 이하로 작성합니다. 해시태그는 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
-4. The higher the spice level, the more strict it is 
+1. "title"은 한국어로 작성하며, 공백 포함 ${OOTD_TITLE_MIN}자 이상 ${OOTD_TITLE_MAX}자 이하로 작성합니다. 제목은 유머러스하고 풍자적인 느낌을 주어야 합니다.
+2. "nickname"은 한국어로 작성하며, 공백 포함 ${OOTD_NICKNAME_MAX}자 이하로 작성합니다. 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
+3. "hashtagList"는 ${OOTD_HASHTAG_MAX_COUNT}개의 해시태그로 구성되며, 각 해시태그는 공백 포함 ${OOTD_HASHTAG_MAX_LENGTH}자 이하로 작성합니다. 해시태그는 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
+4. The higher the spice level, the more strict it is
 5. Do not use code blocks (\` \`\`, \`\`\`), markdowns, or any extra text outside the JSON.
 6. The output must be in Korean only and must only include the JSON object.
 7. Do not return or reuse the example outputs as they are.
@@ -30,11 +38,11 @@ You focus solely on the style, outfit choices, and fashion decisions—not the p
   COMMON_RULE_SYSTEM_PROMPT.trim() +
   `
 <<💡 Output Title Examples>>
-"상의랑 하의가 서로 처음 만났나? 패션 세계의 블라인드 미팅!" // 34자
-"전체적인 모습이 다크 모드인가요? 패션까지 밤하늘처럼 깜깜합니다!" // 35자
-"패션의 밤은 길고, 그의 바지는 더 길다!" // 23자
-"저 바지, 줄다리기 하다 끊겨서 입은 거 아니죠?" //27자
-"어디 여행 갔다 오셨나요...90년대로?" //22자`;
+"상의랑 하의가 서로 처음 만났나? 패션 세계의 블라인드 미팅!"
+"전체적인 모습이 다크 모드인가요? 패션까지 밤하늘처럼 깜깜합니다!"
+"패션의 밤은 길고, 그의 바지는 더 길다!"
+"저 바지, 줄다리기 하다 끊겨서 입은 거 아니죠?"
+"어디 여행 갔다 오셨나요...90년대로?"`;
 
 export const SYSTEM_PROMPT_3 =
   `
