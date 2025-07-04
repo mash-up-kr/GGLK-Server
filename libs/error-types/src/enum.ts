@@ -114,10 +114,24 @@ const EvaluationModuleError: Record<string, IErrorPayload> = {
   },
 } as const;
 
+// Redis Module - 5
+
+export const RedisModuleKey = {
+  REDIS_BAD_REQUEST: 'G5001',
+} as const;
+
+const RedisModuleError: Record<string, IErrorPayload> = {
+  [RedisModuleKey.REDIS_BAD_REQUEST]: {
+    errorMessage: 'REDIS_BAD_REQUEST',
+    statusCode: HttpStatus.BAD_REQUEST,
+  },
+} as const;
+
 export const ModuleErrors = {
   ...GlobalModuleError,
   ...AuthModuleError,
   ...UserModuleError,
   ...PictureModuleError,
   ...EvaluationModuleError,
+  ...RedisModuleError,
 };
