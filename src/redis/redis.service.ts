@@ -43,4 +43,3 @@ export class RedisService {
     await this.redisClient.setbit(REDIS_CHECK_IF_CHANGE_USED_KEY, index, 1);
   }
 }
-export { REDIS_CLIENT };
