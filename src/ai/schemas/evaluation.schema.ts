@@ -1,6 +1,7 @@
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { z } from 'zod';
 import {
+  OOTD_HASHTAG_MAX_COUNT,
   OOTD_HASHTAG_MAX_LENGTH,
   OOTD_NICKNAME_MAX,
   OOTD_TITLE_MAX,
@@ -17,28 +18,42 @@ import {
 export const OotdRoastingAnalysisSchema = z.object({
   title: z
     .string()
-    .min(OOTD_TITLE_MIN, { message: 'title must be at least 25 characters' })
-    .max(OOTD_TITLE_MAX, { message: 'title must be at most 33 characters' })
-    .describe('main roast title (Korean, 25~33 characters)'),
+    .min(OOTD_TITLE_MIN, {
+      message: `제목은 최소 ${OOTD_TITLE_MIN}자 이상이어야 합니다.`,
+    })
+    .max(OOTD_TITLE_MAX, {
+      message: `제목은 최대 ${OOTD_TITLE_MAX}자 이하이어야 합니다.`,
+    })
+    .describe(
+      `주요 로스팅 멘트 (한국어, ${OOTD_TITLE_MIN}~${OOTD_TITLE_MAX}자)`,
+    ),
   nickname: z
     .string()
     .max(OOTD_NICKNAME_MAX, {
-      message: 'nickname must be at most 7 characters',
+      message: `별명은 최대 ${OOTD_NICKNAME_MAX}자 이하이어야 합니다.`,
     })
-    .describe('funny nickname (Korean)'),
+    .describe('재미있는 별명 (한국어)'),
   hashtagList: z
     .array(
       z.string().max(OOTD_HASHTAG_MAX_LENGTH, {
-        message: 'Each hashtag must be at most 20 characters',
+        message: `각 해시태그는 최대 ${OOTD_HASHTAG_MAX_LENGTH}자 이하이어야 합니다.`,
       }),
     )
-    .length(4, { message: 'Exactly 4 hashtags are required' })
-    .describe('4 Korean hashtags roasting the outfit'),
+    .length(OOTD_HASHTAG_MAX_COUNT, {
+      message: `해시태그는 정확히 ${OOTD_HASHTAG_MAX_COUNT}개여야 합니다.`,
+    })
+    .describe(`코디를 로스팅하는 한국어 해시태그 ${OOTD_HASHTAG_MAX_COUNT}개`),
   totalScore: z
     .number()
-    .min(OOTD_TOTAL_SCORE_MIN, { message: 'Score ootd between 10 ~ 100' })
-    .max(OOTD_TOTAL_SCORE_MAX, { message: 'Score ootd between 10 ~ 100' })
-    .describe('Score ootd between 10 ~ 100'),
+    .min(OOTD_TOTAL_SCORE_MIN, {
+      message: `점수는 최소 ${OOTD_TOTAL_SCORE_MIN}점 이상이어야 합니다.`,
+    })
+    .max(OOTD_TOTAL_SCORE_MAX, {
+      message: `점수는 최대 ${OOTD_TOTAL_SCORE_MAX}점 이하이어야 합니다.`,
+    })
+    .describe(
+      `코디 점수 (${OOTD_TOTAL_SCORE_MIN} ~ ${OOTD_TOTAL_SCORE_MAX}점 사이)`,
+    ),
 });
 
 export type OotdRoastingAnalysisType = z.infer<
@@ -56,7 +71,7 @@ export function OotdRoastingAnalysisPrompt(uri: string, spicyLevel: number) {
   return ChatPromptTemplate.fromMessages([
     {
       role: 'system',
-      content: systemPrompt.trim(),
+      content: systemPrompt,
     },
     {
       role: 'user',
