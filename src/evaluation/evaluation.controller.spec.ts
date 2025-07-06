@@ -3,6 +3,7 @@ import {
   MockServiceFactory,
   MockedClass,
 } from '@gglk/common/testing/mock.factory';
+import { RedisService } from '@gglk/redis/redis.service';
 import { EvaluationController } from './evaluation.controller';
 import { EvaluationService } from './evaluation.service';
 
@@ -17,6 +18,10 @@ describe('EvaluationController', () => {
         {
           provide: EvaluationService,
           useFactory: MockServiceFactory.getMockService(EvaluationService),
+        },
+        {
+          provide: RedisService,
+          useFactory: MockServiceFactory.getMockService(RedisService),
         },
       ],
     }).compile();
