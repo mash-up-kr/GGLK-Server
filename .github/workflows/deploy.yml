@@ -43,6 +43,7 @@ jobs:
           echo "PORT=${{ secrets.PORT }}" >> .env
           echo "FRONTEND_DEV_URL=${{ secrets.FRONTEND_DEV_URL }}" >> .env
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> .env
+          echo "CLOVASTUDIO_API_KEY=${{ secrets.CLOVASTUDIO_API_KEY }}" >> .env
           echo "OBJECT_STORAGE_PATTERN=${{ secrets.OBJECT_STORAGE_PATTERN }}" >> .env
           echo "CDN_PATTERN=${{ secrets.CDN_PATTERN }}" >> .env
           echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env

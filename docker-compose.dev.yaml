@@ -27,6 +27,7 @@ services:
       - PORT=8000
       - FRONTEND_DEV_URL=${FRONTEND_DEV_URL}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CLOVASTUDIO_API_KEY=${CLOVASTUDIO_API_KEY}
     depends_on:
       postgres:
         condition: service_healthy
