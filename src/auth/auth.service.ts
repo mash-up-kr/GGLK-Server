@@ -15,16 +15,18 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async getKakaoUserAccessToken(code: string, redirectUri: string) {
+  private get KAKAO_GRANT_TYPE() {
+    return 'authorization_code';
+  }
+
+  async getKakaoUserAccessToken(code: string, redirect_uri: string) {
     try {
-      const data = new URLSearchParams();
-      data.append('grant_type', 'authorization_code');
-      data.append(
-        'client_id',
-        this.configService.get<string>('KAKAO_CLIENT_ID')!,
-      );
-      data.append('code', code);
-      data.append('redirect_uri', redirectUri);
+      const data = new URLSearchParams({
+        grant_type: this.KAKAO_GRANT_TYPE,
+        client_id: this.configService.get<string>('KAKAO_CLIENT_ID')!,
+        code,
+        redirect_uri,
+      });
 
       const response = await axios.post(
         'https://kauth.kakao.com/oauth/token',
