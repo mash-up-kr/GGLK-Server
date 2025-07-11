@@ -40,9 +40,7 @@ export class AuthService {
       return access_token;
     } catch (e) {
       if (e instanceof AxiosError) {
-        console.error(
-          'Error while making authentication to Kakao - Get bearer token',
-        );
+        console.error(e);
         throw new KakaoOauthException();
       } else {
         throw e;
@@ -68,9 +66,7 @@ export class AuthService {
       };
     } catch (e) {
       if (e instanceof AxiosError) {
-        console.error(
-          'Error while making authentication to Kakao - Get user information',
-        );
+        console.error(e);
         throw new KakaoOauthException();
       } else {
         throw e;
