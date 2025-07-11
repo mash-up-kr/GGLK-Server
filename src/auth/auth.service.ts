@@ -28,7 +28,7 @@ export class AuthService {
         redirect_uri,
       });
 
-      const response = await axios.post(
+      const response = await axios.post<{ access_token: string }>(
         'https://kauth.kakao.com/oauth/token',
         data,
         {
@@ -37,9 +37,7 @@ export class AuthService {
           },
         },
       );
-      const { access_token }: { access_token: string; [k: string]: unknown } =
-        response.data;
-      return access_token;
+      return response.data.access_token;
     } catch (e) {
       if (e instanceof AxiosError) {
         console.error(e);
