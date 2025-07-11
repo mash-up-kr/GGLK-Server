@@ -1,7 +1,8 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import axios, { AxiosError } from 'axios';
+import { catchError, firstValueFrom } from 'rxjs';
 import { KakaoUserResponse, UserPayload } from '@gglk/auth/auth.interface';
 import { UserService } from '@gglk/user/user.service';
 import { TOKEN_TYPE } from './auth.constant';
@@ -13,6 +14,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {}
 
   private get KAKAO_GRANT_TYPE() {
@@ -20,58 +22,57 @@ export class AuthService {
   }
 
   async getKakaoUserAccessToken(code: string, redirect_uri: string) {
-    try {
-      const data = new URLSearchParams({
-        grant_type: this.KAKAO_GRANT_TYPE,
-        client_id: this.configService.get<string>('KAKAO_CLIENT_ID')!,
-        code,
-        redirect_uri,
-      });
+    const data = new URLSearchParams({
+      grant_type: this.KAKAO_GRANT_TYPE,
+      client_id: this.configService.get<string>('KAKAO_CLIENT_ID')!,
+      code,
+      redirect_uri,
+    });
 
-      const response = await axios.post<{ access_token: string }>(
-        'https://kauth.kakao.com/oauth/token',
-        data,
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+    const response = await firstValueFrom(
+      this.httpService
+        .post<{ access_token: string; [k: string]: unknown }>(
+          'https://kauth.kakao.com/oauth/token',
+          data,
+          {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8',
+            },
           },
-        },
-      );
-      return response.data.access_token;
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        console.error(e);
-        throw new KakaoOauthException();
-      } else {
-        throw e;
-      }
-    }
+        )
+        .pipe(
+          catchError((error) => {
+            console.error(error);
+            throw new KakaoOauthException();
+          }),
+        ),
+    );
+
+    return response.data.access_token;
   }
 
   async getKakaoUserByAccessToken(accessToken: string) {
-    try {
-      const userRes = await axios.get<KakaoUserResponse>(
-        'https://kapi.kakao.com/v2/user/me',
-        {
+    const userRes = await firstValueFrom(
+      this.httpService
+        .get<KakaoUserResponse>('https://kapi.kakao.com/v2/user/me', {
           headers: {
             Authorization: `Bearer ${accessToken}`,
           },
-        },
-      );
+        })
+        .pipe(
+          catchError((error) => {
+            console.error(error);
+            throw new KakaoOauthException();
+          }),
+        ),
+    );
 
-      const kakaoUser = userRes.data;
-      return {
-        id: kakaoUser.id.toString(),
-        name: kakaoUser.properties?.nickname ?? '',
-      };
-    } catch (e) {
-      if (e instanceof AxiosError) {
-        console.error(e);
-        throw new KakaoOauthException();
-      } else {
-        throw e;
-      }
-    }
+    const { data: kakaoUser } = userRes;
+
+    return {
+      id: kakaoUser.id.toString(),
+      name: kakaoUser.properties?.nickname ?? '',
+    };
   }
 
   async generateGuestToken() {
