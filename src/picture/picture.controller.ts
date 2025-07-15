@@ -11,6 +11,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { v4 as uuidv4 } from 'uuid';
 import { UserPayload } from '@gglk/auth/auth.interface';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
+import { ImagePipe } from '@gglk/common/pipe/image.pipe';
 import {
   PictureControllerDocs,
   PictureDeleteDocs,
@@ -37,7 +38,7 @@ export class PictureController {
   @UseInterceptors(FileInterceptor('image'))
   async uploadPicture(
     @GetUser() userPayload: UserPayload,
-    @UploadedFile() image: Express.Multer.File,
+    @UploadedFile(new ImagePipe()) image: Express.Multer.File,
   ) {
     const key = uuidv4();
     const picture = await this.picturesService.savePicture({

@@ -1,5 +1,5 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
-import sharp from 'sharp';
+import * as sharp from 'sharp';
 
 const MAX_LENGTH = 2240;
 
@@ -11,10 +11,13 @@ export class ImagePipe implements PipeTransform {
     const height = metadata.height;
 
     if (width >= MAX_LENGTH || height >= MAX_LENGTH) {
-      const resizeOptions =
-        width >= height ? { width: MAX_LENGTH } : { height: MAX_LENGTH };
-
-      value.buffer = await sharp(value.buffer).resize(resizeOptions).toBuffer();
+      value.buffer = await sharp(value.buffer)
+        .resize({
+          width: MAX_LENGTH,
+          height: MAX_LENGTH,
+          fit: 'inside',
+        })
+        .toBuffer();
     }
 
     return value;
