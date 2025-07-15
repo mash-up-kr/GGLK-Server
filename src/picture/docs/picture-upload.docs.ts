@@ -27,10 +27,13 @@ export const PictureUploadDocs = applyDecorators(
   }),
   ApiResponse({
     status: HttpStatus.CREATED,
-    description: '사진 저장 성공, 저장된 사진의 id 반환',
+    description: '사진 저장 성공, 저장된 사진의 id와 url 반환',
     schema: {
-      type: 'number',
-      example: 123,
+      type: 'object',
+      properties: {
+        id: { type: 'number', example: 123 },
+        url: { type: 'string', example: 'https://example.com/image.jpg' },
+      },
     },
   }),
 );

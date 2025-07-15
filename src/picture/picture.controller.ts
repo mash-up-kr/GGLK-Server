@@ -40,14 +40,19 @@ export class PictureController {
     @UploadedFile() image: Express.Multer.File,
   ) {
     const key = uuidv4();
-    const picture = await this.picturesService.savePicture({
+    const { id, url } = await this.picturesService.savePicture({
       file: image.buffer,
       bucket: this.bucket,
       key,
       contentType: image.mimetype,
       userId: userPayload.id,
     });
-    return picture.id;
+    console.log(id, url);
+
+    return {
+      id,
+      url,
+    };
   }
 
   @Delete(':id')
