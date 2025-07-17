@@ -20,7 +20,8 @@ export class AiService {
     this.chatModel = new ChatOpenAI({
       apiKey: this.configService.get('OPENAI_API_KEY'),
       model: 'gpt-4o-mini',
-      temperature: 0,
+      temperature: 0.7,
+      topP: 0.8,
     });
   }
 
