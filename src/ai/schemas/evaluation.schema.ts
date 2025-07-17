@@ -1,3 +1,4 @@
+import { HumanMessage, SystemMessage } from '@langchain/core/messages';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { z } from 'zod';
 import {
@@ -68,19 +69,12 @@ export function OotdRoastingAnalysisPrompt(uri: string, spicyLevel: number) {
         ? SYSTEM_PROMPT_2
         : SYSTEM_PROMPT_3;
 
+  const HumanPrompt = `
+    코디 사진을 보고 로스팅을 해주세요. 사진 URL: ${uri}
+  `;
+
   return ChatPromptTemplate.fromMessages([
-    {
-      role: 'system',
-      content: systemPrompt,
-    },
-    {
-      role: 'user',
-      content: [
-        {
-          type: 'image_url',
-          image_url: { url: uri },
-        },
-      ],
-    },
+    new SystemMessage(systemPrompt),
+    new HumanMessage(HumanPrompt),
   ]);
 }
