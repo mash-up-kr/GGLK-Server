@@ -62,7 +62,10 @@ describe('PictureController', () => {
       const result = await controller.uploadPicture(mockUser, mockFile);
 
       expect(mockedService.savePicture).toHaveBeenCalled();
-      expect(result).toBe(123);
+      expect(result).toBe({
+        id: 123,
+        url: undefined,
+      });
     });
   });
 });
