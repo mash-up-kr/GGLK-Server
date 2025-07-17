@@ -28,7 +28,8 @@ export function ApplicationNestConfig(app: INestApplication) {
   // CORS Policy
   // Option Document: https://github.com/expressjs/cors#configuration-options
   app.enableCors({
-    origin: '*',
+    origin: ['http://localhost:5173', 'https://ooootd.com'],
+    credentials: true,
   });
 
   // Application Versioning
