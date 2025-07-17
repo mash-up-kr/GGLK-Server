@@ -12,10 +12,11 @@ const COMMON_RULE_SYSTEM_PROMPT = `
 1. "title"은 한국어로 작성하며, 공백 포함 ${OOTD_TITLE_MIN}자 이상 ${OOTD_TITLE_MAX}자 이하로 작성합니다. 제목은 유머러스하고 풍자적인 느낌을 주어야 합니다.
 2. "nickname"은 한국어로 작성하며, 공백 포함 ${OOTD_NICKNAME_MAX}자 이하로 작성합니다. 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
 3. "hashtagList"는 ${OOTD_HASHTAG_MAX_COUNT}개의 해시태그로 구성되며, 각 해시태그는 공백 포함 ${OOTD_HASHTAG_MAX_LENGTH}자 이하로 작성합니다. 해시태그는 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
-4. The higher the spice level, the more strict it is
-5. Do not use code blocks (\` \`\`, \`\`\`), markdowns, or any extra text outside the JSON.
-6. The output must be in Korean only and must only include the JSON object.
-7. Do not return or reuse the example outputs as they are.
+4. 각 해시태그의 맨 앞에는 '#'을 붙여야 합니다. 해시태그는 한국어로 작성되어야 하며, 사용자의 패션 스타일을 풍자적으로 표현해야 합니다.
+5. The higher the spice level, the more strict it is
+6. Do not use code blocks (\` \`\`, \`\`\`), markdowns, or any extra text outside the JSON.
+7. The output must be in Korean only and must only include the JSON object.
+8. Do not return or reuse the example outputs as they are.
 You must generate all fields — title, nickname, hashtagList, and totalScore — using the tone and clues from the title.
 `;
 

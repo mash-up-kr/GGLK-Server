@@ -4,6 +4,7 @@ import { ChatOpenAI } from '@langchain/openai';
 import {
   OotdRoastingAnalysisPrompt,
   OotdRoastingAnalysisSchema,
+  OotdRoastingAnalysisType,
 } from '@gglk/ai/schemas/evaluation.schema';
 import { PictureNotFoundException } from '@gglk/picture/exceptions';
 import { PictureRepository } from '@gglk/picture/picture.repository';
@@ -40,6 +41,16 @@ export class AiService {
     return picture;
   }
 
+  private processHashtags(response: OotdRoastingAnalysisType) {
+    return {
+      ...response,
+      hashtagList: response.hashtagList.map((hashtag) => {
+        const trimmed = hashtag.trim();
+        return trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+      }),
+    };
+  }
+
   async invokeAiOotdRoasting(
     pictureId: number,
     spicyLevel: number,
@@ -52,8 +63,12 @@ export class AiService {
       spicyLevel,
     ).formatMessages({});
 
-    return await this.chatModel
+    const chatModelResponse = await this.chatModel
       .withStructuredOutput(OotdRoastingAnalysisSchema)
       .invoke(ootdRoastingPrompt);
+
+    const verifiedResponse = this.processHashtags(chatModelResponse);
+
+    return verifiedResponse;
   }
 }
