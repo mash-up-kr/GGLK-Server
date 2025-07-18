@@ -21,7 +21,7 @@ export class AiService {
       apiKey: this.configService.get('OPENAI_API_KEY'),
       model: 'gpt-4o-mini',
       temperature: 0.7,
-      topP: 0.8,
+      topP: 0.9,
     });
   }
 
