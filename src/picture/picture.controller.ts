@@ -47,7 +47,6 @@ export class PictureController {
       contentType: image.mimetype,
       userId: userPayload.id,
     });
-    console.log(id, url);
 
     return {
       id,
