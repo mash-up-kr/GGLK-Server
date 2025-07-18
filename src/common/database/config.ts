@@ -21,8 +21,6 @@ function AssembleDataSourceOption(
       : (key: string, defaultValue: string = '') =>
           key in process.env ? context[key] : defaultValue;
 
-  const isDev = parseEnv('APP_MODE', 'dev') === 'dev';
-
   return {
     type: 'postgres',
     host: parseEnv('DB_HOST', 'localhost'),
@@ -31,7 +29,6 @@ function AssembleDataSourceOption(
     password: parseEnv('DB_PASSWORD', 'password'),
     database: parseEnv('DB_NAME', 'gglk'),
     synchronize: false,
-    logging: isDev,
     entities: [join(cwd(), 'dist', '**', `*.entity.js`)],
     migrations: [join(cwd(), 'dist', '**/migrations', '*.js')],
   };
