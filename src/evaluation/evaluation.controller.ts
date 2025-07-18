@@ -27,6 +27,9 @@ export class EvaluationController {
   @Get('guest-used')
   @CheckEvaluationDocs
   async checkIfGuestUserUseChance(@GetUser() userPayload: UserPayload) {
+    if (userPayload.tokenType === 'USER') {
+      return false;
+    }
     return this.redisService.checkIfUseChanceByBitmap(userPayload.id);
   }
 
