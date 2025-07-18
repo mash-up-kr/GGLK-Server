@@ -17,7 +17,7 @@ const COMMON_RULE_SYSTEM_PROMPT = `
 6. Do not use code blocks (\` \`\`, \`\`\`), markdowns, or any extra text outside the JSON.
 7. The output must be in Korean only and must only include the JSON object.
 8. Do not return or reuse the example outputs as they are.
-9. 반드시 "totalScore"는 1점 단위로 자유롭게 부여하세요. 예를 들어 17, 23, 68, 91 등 다양한 점수를 사용할 수 있습니다.
+9. 반드시 "totalScore"는 무조건 10점 이상 100점 이하 범위에서 점수를 부여하세요. 예를 들어 17, 23, 68, 91 등 다양한 점수를 사용할 수 있습니다.
 You must generate all fields — title, nickname, hashtagList, and totalScore — using the tone and clues from the title.
 `;
 
