@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as Sentry from '@sentry/nestjs';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
 import type { Express } from 'express';
 import redoc from 'redoc-express';
 import { GlobalResponseInterceptor, HttpExceptionFilter } from '@gglk/common';
@@ -84,5 +86,21 @@ export function ApplicationSwaggerConfig(app: INestApplication) {
       displayRequestDuration: true,
       operationsSorter: 'method',
     },
+  });
+}
+
+export function ApplicationSentryConfig() {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      // Add our Profiling integration
+      nodeProfilingIntegration(),
+    ],
+
+    sendDefaultPii: true,
+
+    // Add Tracing by setting tracesSampleRate
+    // We recommend adjusting this value in production
+    tracesSampleRate: 1.0,
   });
 }
