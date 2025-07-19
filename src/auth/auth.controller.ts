@@ -8,6 +8,7 @@ import {
 } from '@gglk/auth/auth.constant';
 import { AuthService } from '@gglk/auth/auth.service';
 import { GetUser } from '@gglk/common/decorator/get-user.decorator';
+import { UserPayload } from './auth.interface';
 import { KakaoLoginHandlerGuardDefinition } from './decorator/kakao-login.decorator';
 import { GuestTokenDocs } from './docs';
 import { KakaoLoginHandlerDocs } from './docs/kakao-login.docs';
@@ -38,9 +39,12 @@ export class AuthController {
   @KakaoLoginHandlerGuardDefinition
   @KakaoLoginHandlerDocs
   async kakaoLoginHandler(
-    @GetUser('id') guestUserId: string,
+    @GetUser() user: UserPayload,
     @Body() body: KakakoLoginRequestDto,
   ) {
+    if (user.tokenType === 'USER') {
+      return await this.authService.generateToken(user.id);
+    }
     const access_token = await this.authService.getKakaoUserAccessToken(
       body.code,
       body.redirectUri,
@@ -49,14 +53,14 @@ export class AuthController {
     const kakaoUser =
       await this.authService.getKakaoUserByAccessToken(access_token);
 
-    const token = guestUserId
+    const token = user.id
       ? await this.authService.generateTokenWithGuestUserMigration(
           kakaoUser.id,
           kakaoUser.name,
           STRATEGY_TYPE.KAKAO,
-          guestUserId,
+          user.id,
         )
-      : await this.authService.generateToken(
+      : await this.authService.generateTokenWithRetrieveOrCreateUser(
           kakaoUser.id,
           kakaoUser.name,
           STRATEGY_TYPE.KAKAO,
