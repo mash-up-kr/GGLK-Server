@@ -6,6 +6,6 @@ import { JwtAuthGuard } from '../guard/jwt.guard';
 
 export const KakaoLoginHandlerGuardDefinition = applyDecorators(
   UseGuards(JwtAuthGuard, UserTypeGuard),
-  UserType(['GUEST']),
+  UserType(['GUEST', 'USER']),
   Public(),
 );

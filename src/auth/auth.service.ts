@@ -87,7 +87,19 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  async generateToken(
+  async generateToken(userId: string) {
+    const user = await this.userService.findById(userId);
+    if (!user) {
+      return null;
+    }
+    return this.jwtService.sign({
+      id: user.id,
+      name: user?.name ?? '',
+      tokenType: TOKEN_TYPE.USER,
+    });
+  }
+
+  async generateTokenWithRetrieveOrCreateUser(
     oauthProivderId: string,
     userName: string,
     strategyType: string,
