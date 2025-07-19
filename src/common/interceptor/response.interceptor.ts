@@ -97,6 +97,7 @@ export class GlobalResponseInterceptor implements NestInterceptor {
       const exceptionStatusCode =
         error instanceof HttpException ? error.getStatus() : 500;
       doLogging(exceptionStatusCode, ip, method, originUrl, user);
+      logger.error(error);
 
       if (error instanceof BaseException) {
         return throwError(() => error);

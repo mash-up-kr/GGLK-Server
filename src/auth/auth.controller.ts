@@ -42,7 +42,7 @@ export class AuthController {
     @GetUser() user: UserPayload,
     @Body() body: KakakoLoginRequestDto,
   ) {
-    if (user.tokenType === 'USER') {
+    if (user?.tokenType === 'USER') {
       return await this.authService.generateToken(user.id);
     }
     const access_token = await this.authService.getKakaoUserAccessToken(
@@ -53,7 +53,7 @@ export class AuthController {
     const kakaoUser =
       await this.authService.getKakaoUserByAccessToken(access_token);
 
-    const token = user.id
+    const token = user?.id
       ? await this.authService.generateTokenWithGuestUserMigration(
           kakaoUser.id,
           kakaoUser.name,
