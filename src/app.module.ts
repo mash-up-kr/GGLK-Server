@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SentryModule } from '@sentry/nestjs/setup';
 import { DataSourceConfigService } from '@gglk/common';
 import { EvaluationModule } from '@gglk/evaluation/evaluation.module';
 import { PictureModule } from '@gglk/picture/picture.module';
@@ -21,6 +22,7 @@ import { UserModule } from './user/user.module';
       useClass: DataSourceConfigService,
       inject: [ConfigService],
     }),
+    SentryModule.forRoot(),
     UserModule,
     AuthModule,
     EvaluationModule,
